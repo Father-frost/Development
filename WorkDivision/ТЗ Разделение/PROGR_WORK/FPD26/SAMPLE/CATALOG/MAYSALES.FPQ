@@ -1,0 +1,54 @@
+
+* WIZNAME = WZ_BQUER
+* VERSION = .95
+* TIMESTAMP = 476774400.0000
+* CLIENTSERVER =
+* TABLES = C:\FPD26\SAMPLE\CATALOG\INVOICES.DBF
+* FIELDS = Invoices.ino;Invoices.idate;Invoices.itotal
+* FILTER = 0;0;Invoices.idate;5;{5/1/90};0
+* FILTER = 0;0;Invoices.idate;2;{6/1/90};0
+* SORT FIELDS = Invoices.ino
+* GROUP = 
+* SQL = SQL Select statement for Mailmerge Wizard:
+* SELECT Invoices.ino,Invoices.idate,Invoices.itotal;
+*	FROM C:\FPD26\SAMPLE\CATALOG\INVOICES.DBF;
+*	WHERE (Invoices.idate >= {5/1/90} AND Invoices.idate < {6/1/90});
+*	ORDER BY Invoices.ino;
+*	INTO CURSOR Query
+IF !USED("Invoices")
+	SELECT 0
+	USE (LOCFILE("C:\FPD26\SAMPLE\CATALOG\INVOICES.DBF","DBF","Where is Invoices.DBF ?")) AGAIN ALIAS Invoices
+ELSE
+	SELECT Invoices
+	SET RELATION TO
+	SET SKIP TO
+	SET ORDER TO
+	SET FILTER TO
+ENDIF
+*Sort order
+m.i=1
+DO WHILE !EMPTY(KEY(m.i))
+	IF NORMALIZE(KEY(m.i))="INO"
+		SET ORDER TO m.i ASCENDING
+		EXIT
+	ENDIF
+	m.i=m.i+1
+ENDDO
+IF EMPTY(SET("ORDER"))
+	IF SYS(2011)#"Exclusive"
+		USE DBF(ALIAS()) EXCLUSIVE AGAIN ALIAS (ALIAS())
+	ENDIF
+	INDEX ON ino TAG ino
+ENDIF
+*Filter
+IF EMPTY(SET("FILTER"))
+	SET FILTER TO (Invoices.idate >= {5/1/90} AND Invoices.idate < {6/1/90})
+ELSE
+	PRIVATE m.mfilt
+	m.mfilt=SET("FILTER")
+	SET FILTER TO &mfilt AND (Invoices.idate >= {5/1/90} AND Invoices.idate < {6/1/90})
+ENDIF
+LOCATE
+SET FIELDS GLOBAL
+SET FIELDS TO
+SET FIELDS TO Invoices.ino,Invoices.idate,Invoices.itotal

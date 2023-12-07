@@ -1,0 +1,49 @@
+System: 
+Author: 
+09.03.10   14:26:03
+System Summary
+
+-------------------------------------------------------------------------------
+
+
+This system has:
+   150 lines of code
+     6 program files
+     0 procedure files
+     0 procedures and functions
+     2 databases
+     0 structural index files
+     2 index files
+     0 report forms
+     0 format files
+     0 label forms
+     0 binary files
+     0 memory variable files
+     0 menu files
+     0 screen files
+     3 other files
+    30 cross-referenced tokens
+
+
+See the tree diagram for programs, procedures, functions and format files
+
+
+                   Index          Report         Label          Memory
+  Databases        Files          Forms          Forms          Files
+-------------- -------------- -------------- -------------- --------------
+
+&IF_D          &IF_I                                                       
+&IF_D10        &IF_I101                                                    
+
+-------------------------------------------------------------------------------
+FoxDoc created the following documentation files:
+         D:\FPD26\STATS.DOC   
+         D:\FPD26\TREE.DOC    
+         D:\FPD26\FILELIST.DOC
+         D:\FPD26\REPRINT.DOC
+         D:\FPD26\NDXSUMRY.DOC
+         D:\FPD26\DATADICT.DOC
+         D:\FPD26\OTHER.DOC   
+         D:\FPD26\XREF.DOC    
+         D:\FPD26\ERROR.DOC
+         Action diagram files

@@ -1,0 +1,171 @@
+      +------------------------------------------------------------+
+      |     Dynamic Mouse Driver Release Notes (version 9.10)      |
+      |     Copyright (C) KYE Systems Corp. 1992                   |
+      +------------------------------------------------------------+
+
+      The following mouse parameters have been added to the MOUSE
+      driver which allow you to configure the mouse or trackball to
+      fit your requirements.
+
+     A. Communication Port ( p )
+        ------------------------
+        Your mouse can be connected through a PS/2 mouse port, a port
+        on a mouse bus extension card, or a serial (COM) port. If
+        connected to either of the first two types of ports, the mouse
+        driver will automatically detect and configure it when you
+        load the MOUSE driver. If connected to a COM port other than
+        COM1, you must inform the MOUSE driver when loading it.
+
+        The command format is:
+
+        MOUSE p    (Where p = 1 to 4).
+
+        For example, if you install the mouse at COM2 (default
+        setting), enter the following when loading the driver:
+
+        MOUSE 2
+
+        However, for loading the driver when the mouse is connected
+        to COM1, a bus mouse port, or a PS/2 port, no parameter is
+        needed. Type:
+
+        MOUSE
+
+        to load the driver.
+
+        The standard Relative Address and IRQ no. for each COM port
+        are listed in the table below:
+
+        -------+----------+------------------+----------
+          port |  COM no. |  Address in HEX. |  IRQ no.
+        -------+----------+------------------+----------
+           1   |  COM 1   |       3F8        |  IRQ 4
+           2   |  COM 2   |       2F8        |  IRQ 3
+           3   |  COM 3   |       3E8        |  IRQ 4
+           4   |  COM 4   |       2E8        |  IRQ 3
+        -------+----------+------------------+----------
+
+
+        These settings should be acceptable for each COM port. However
+        if there is a need to set a specific I/O port - IRQ no. for a
+        given port, refer to section C.
+
+     B. Acceleration Setting ( *a )
+        ---------------------------
+
+        The acceleration parameters determine the relative speed of
+        cursor movement for set distances of mouse movement within a
+        standard amount of time. On the existing five acceleration
+        settings, speed is slowed for shorter distances and increased
+        for longer distances. Thus, when operating your mouse, you get
+        more precision in short distances, but are still able to move
+        the cursor across the whole screen with a quick, short movement.
+
+        You can choose from five acceleration settings. Setting 1
+        is a slower setting, Setting 5 is relatively fast.
+
+        The default is Setting 3. To choose another setting, type:
+
+        MOUSE *a   (Where a = 1 to 5, if omitted, Setting 3 is selected.)
+
+        i.e.: MOUSE *2 selects Acceleration Setting 2.
+
+
+
+     C. I/O Port Address & IRQ no. ( -i,q )
+        -----------------------------------
+        This feature is provided for experienced users. If you're
+        unfamiliar with I/O ports and IRQ channels, don't attempt to
+        change these because any mistakes could prevent you from
+        using your computer. In general these settings do NOT need
+        to be changed. However, if your COM port is not set to any of
+        the standard I/O Port Addresses and IRQ combinations listed in
+        the table under section A, you need to directly tell the MOUSE
+        driver the I/O Port Address and IRQ No. when loading the driver.
+
+
+        To select a non-standard I/O Port Address and IRQ channel,
+        type:
+
+        MOUSE -i,q (that is "dash""I/O Port Address""comma""IRQ No.")
+
+        The IRQ setting can range from 2 through 5. The default is 5.
+
+        Example:
+
+        MOUSE -3E0,2 (Loads the driver, selects 3E0H port address
+                              and IRQ no. 2)
+
+        WARNING: If the wrong setting is selected or not set
+                 properly, you may cause system error!
+
+
+     D. Switch Ortho Line Function  ( +s )
+        ----------------------------------
+        The Ortho Line function is provided as an aid to the user
+        for drawing straight horizontal or vertical lines. You can
+        set this function to be ON or OFF, by setting the parameter
+        to "+1" or "+0". The default for this function is OFF.
+
+        Once you have set the Ortho line function "ON", you press
+        the left and right button of the mouse (or trackball) at the
+        same time to start the function. Use the same method to
+        turn the function "OFF" when you don't want to use it.
+
+        Then, to activate the Ortho Line Function, type the command:
+
+           MOUSE +1   (Switches the Ortho Line Function ON)
+           Then simultaneously press the left and right buttons.
+
+           Pressing the buttons again toggles the function OFF.
+
+       To deactivate the Ortho Line Function, type:
+
+           MOUSE +0   (Switches the Ortho Line Function OFF)
+
+
+     E. Multiple Parameters
+        ------------------
+        It is also possible to select multiple parameters in one command.
+        The sequence for selecting multiple parameters is:
+        1). Acceleration (*a)
+        2). Ortho Line function (+s)
+        3). COM port (p or -i,q)
+
+        Where a is from 1 to 5, s is 0 or 1, p is from 1 to 4, i is the
+        I/O Port Address, and q is the IRQ No.
+
+        Ex: A >MOUSE *4+1-3E8,4
+        This case allows for faster movement of the cursor (*4) on
+        the screen and the mouse port address is 3E8H which IRQ4 is ass-
+        igned. We also activated the Ortho line Function (+1).
+
+        Ex: A >MOUSE *3-279
+        Acceleration Setting 3, I/O Port Address 279H, and default
+        IRQ no. 5.
+
+        Ex: A >MOUSE +1-260
+        The Ortho line function is activated and we set the I/O port
+        address to 260H. The IRQ would be the default, no. 5.
+
+        Ex: A >MOUSE 4*2
+        This command connects your mouse to communication port COM4
+        and uses the default address and IRQ no. associated with COM 4
+        (refer to the table in section A of this file), and allows for
+        slower movement of the cursor (*2) on the screen.
+
+
+     F. The Dynamic Mouse Driver V9.10 provides a bus mouse interface which
+        is suitable for Microsoft Bus Mouse, Microsoft InPort Mouse.
+
+        Important: This README.DOC takes precedence over the user's
+                   manual that accompanies your input device (mouse
+                   or trackball). The Dynamic Mouse driver V9.10 is the
+                   latest driver currently available. The driver is
+                   continually updated and if you're trying to run
+                   a new software program and having problems using
+                   the input device, please contact the place of
+                   purchase for assistance.
+
+
+

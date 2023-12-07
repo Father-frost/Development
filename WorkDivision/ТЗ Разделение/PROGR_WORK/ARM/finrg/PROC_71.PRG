@@ -1,0 +1,2511 @@
+PROCEDURE Chapzk
+PARAMETERS color4,nstrv,nstrn,ncoll,ncolr,step,npolscrm,scr,scr1,scr2,scr3,scr4
+nstrv=11
+nstrn=21
+ncoll=33
+ncolr=69
+step=1
+npolscrm=1
+nam_str=''
+nam_str1=''
+nam_str2=''
+DO Nastr WITH "     Информация    по    ",RTRIM(nastf_s),"ам",37,nam_str
+DO Nastr WITH "",RTRIM(nastf_s),"а",6,nam_str1
+DO Nastr WITH "         ",RTRIM(nastf_s),"а",30,nam_str2
+@ nstrv-5,ncoll FILL TO nstrv+11,ncolr+2 COLOR &color20
+SET COLOR TO &color4
+@ nstrv-6,ncoll-1,nstrv+10,ncolr+1 BOX "╔═╗║╝═╚║ "
+@ nstrv-5 ,ncoll-1 SAY "║"+nam_str+"║"
+@ nstrv-4 ,ncoll-1 SAY "╟──────┬──────────────────────────────╢"
+@ nstrv-3 ,ncoll-1 SAY "║ Код  │       Hаименование"
+@ nstrv-2 ,ncoll-1 SAY "║"+nam_str1+"│"+nam_str2+"║"
+@ nstrv-1 ,ncoll-1 SAY "╟──────┴──────────────────────────────╢"
+@ nstrv+10,ncoll-1 SAY "╚═ Поиск: F2 ─ код, F3 - наименование "
+RETURN
+*
+PROCEDURE Strsayzk
+PARAMETERS color,nstr,npolscr
+SET COLOR TO &color
+@ nstr,33 SAY nzk
+@ nstr,40 SAY nam
+RETURN
+*
+PROCEDURE Strgetzk
+PARAMETERS nstr,npolscr
+@ nstr,33 GET nzk
+@ nstr,40 GET nam
+READ
+RETURN
+*
+PROCEDURE F2zk
+IF RECCOUNT()=0
+    RETURN
+ENDIF
+PRIVATE fnpd,nz
+nz=RECNO()
+fnpd=SPACE(LEN(nzk))
+DEFINE WINDOW Zapros FROM 10,41 TO 12,54 COLOR SCHEME 19 SHADOW DOUBLE
+ACTIVATE WINDOW Zapros
+SET COLOR TO &color14
+@ 0,0 SAY ' Код' GET fnpd
+READ
+RELEASE WINDOW Zapros
+SET ORDER TO kodzk
+IF EMPTY(fnpd)
+    RETURN
+ENDIF
+IF !SEEK(fnpd)
+    DO Net_n WITH 14," Hет такого кода. Повтоpите..."
+    GO nz
+ENDIF
+RETURN
+*
+PROCEDURE F3zk
+IF RECCOUNT()=0
+    RETURN
+ENDIF
+PRIVATE fnam,nz
+nz=RECNO()
+fnam=SPACE(LEN(nam))
+DEFINE WINDOW Zapros FROM 10,19 TO 12,65 COLOR SCHEME 19 SHADOW DOUBLE
+ACTIVATE WINDOW Zapros
+SET COLOR TO &color14
+@ 0,0 SAY ' Наименование' GET fnam
+READ
+RELEASE WINDOW Zapros
+SET ORDER TO nam
+IF EMPTY(fnam)
+    RETURN
+ENDIF
+SET EXACT OFF
+IF !SEEK(RTRIM(fnam))
+    DO Net_n WITH 14," Hет такого наименования. Повтоpите..."
+    GO nz
+ENDIF
+SET EXACT ON
+RETURN
+*
+*
+PROCEDURE Chapsg
+PARAMETERS color4,nstrv,nstrn,ncoll,ncolr,step,npolscrm,scr,scr1,scr2,scr3,scr4
+DEFINE WINDOW Chapsg FROM 6,30 TO 22,64 COLOR SCHEME 19 SHADOW DOUBLE
+ACTIVATE WINDOW Chapsg
+nstrv=4
+nstrn=15
+ncoll=0
+ncolr=32
+step=1
+npolscrm=1
+SET COLOR TO &color4
+@ nstrv-4 ,ncoll SAY "        Разделы плана счетов"
+@ nstrv-3 ,ncoll SAY "───────┬──────────────────────────"
+@ nstrv-2 ,ncoll SAY " Раздел│      Hаименование"
+@ nstrv-1 ,ncoll SAY "───────┴──────────────────────────"
+RETURN
+*
+PROCEDURE Strsaysg
+PARAMETERS color,nstr,npolscr
+SET COLOR TO &color
+@ nstr,2 SAY grup
+@ nstr,8 SAY nam
+RETURN
+*
+PROCEDURE Strgetsg
+PARAMETERS nstr,npolscr
+@ nstr,2 GET grup
+@ nstr,8 GET nam
+READ
+RETURN
+*
+*
+PROCEDURE Chapss
+PARAMETERS color4,nstrv,nstrn,ncoll,ncolr,step,npolscrm,scr,scr1,scr2,scr3,scr4
+DEFINE WINDOW Chapss FROM 4,0 TO 23,79 COLOR SCHEME 19 SHADOW DOUBLE
+ACTIVATE WINDOW Chapss
+nstrv=5
+nstrn=16
+ncoll=0
+ncolr=77
+step=1
+npolscrm=1
+SET COLOR TO &color4
+@ nstrv-5 ,ncoll SAY "   П л а н   с ч е т о в   б у х г а л т е p с к о г о   у ч е т а"
+@ nstrv-4 ,ncoll SAY "───────┬──────────────────────────┬───────┬──────────────────────────┬────────"
+@ nstrv-3 ,ncoll SAY " Раздел│      Hаименование        │ Hомер │      Hаименование        │ Признак"
+@ nstrv-2 ,ncoll SAY "       │        pаздела           │ счета │         счета            │ валюты"
+@ nstrv-1 ,ncoll SAY "───────┴──────────────────────────┴───────┴──────────────────────────┴────────"
+@ nstrv+11,ncoll SAY "──────────────────────────────────────────────────────────────────────────────"
+@ nstrv+12,ncoll SAY "═════════════════════════════════════════ F10 - печать ═══════════════════════"
+RETURN
+*
+PROCEDURE Strsayss
+PARAMETERS color,nstr,npolscr
+SET COLOR TO &color
+IF grup#ggrup.AND.pr_v_pr.OR.nstr=nstrv.OR.nstr=nstrn-1
+    SELECT spr_grup
+    SEEK spr_bs.grup
+    SELECT spr_bs
+    @ nstr,0 SAY grup
+    @ nstr,8 SAY spr_grup.nam
+    ggrup=grup
+ENDIF
+@ nstr,35 SAY bs
+@ nstr,43 SAY nam
+@ nstr,74 SAY pr_val
+RETURN
+*
+PROCEDURE Strgetss
+PARAMETERS nstr,npolscr
+@ nstr, 0 GET grup VALID Poisk_sg('spr_bs.grup',.F.,nstr,8,25) ERROR 'Hет такого кода...'
+@ nstr,35 GET bs
+@ nstr,43 GET nam
+@ nstr,74 GET pr_val VALID pr_val='0'.OR.pr_val='1' ERROR 'Значение 0 - обычный, 1 - валютный...'
+READ
+RETURN
+*
+*
+PROCEDURE Chapsr
+PARAMETERS color4,nstrv,nstrn,ncoll,ncolr,step,npolscrm,scr,scr1,scr2,scr3,scr4
+nstrv=12
+nstrn=22
+ncoll=19
+ncolr=70
+step=1
+npolscrm=1
+SET COLOR TO &color4
+@ nstrv-7,ncoll FILL TO nstrv+11,ncolr+2 COLOR &color20
+@ nstrv-8,ncoll-1,nstrv+10,ncolr+1 BOX "╔═╗║╝═╚║ "
+@ nstrv-7 ,ncoll-1 SAY "║             Справочник работников"
+@ nstrv-6 ,ncoll-1 SAY "╟────────────────────────────────────────────────────╢"
+@ nstrv-5 ,ncoll-1 SAY "║ Цех:"
+@ nstrv-4 ,ncoll-1 SAY "╟─────────┬──────┬───────────────────────────────────╢"
+@ nstrv-3 ,ncoll-1 SAY "║Табельный│  Цех │             Ф.И.О."
+@ nstrv-2 ,ncoll-1 SAY "║  номер  │      │"
+@ nstrv-1 ,ncoll-1 SAY "╟─────────┴──────┴───────────────────────────────────╢"
+@ nstrv+10,ncoll-1 SAY "╚ Поиск:F2─таб.номер,F3-ФИО,F4-фрагмент ═ F10─печать "
+RETURN
+*
+PROCEDURE Strsaysr
+PARAMETERS color,nstr,npolscr
+IF !pr_v_pr
+    SET COLOR TO &color21
+    SELECT sch
+    SET ORDER TO sch
+    SEEK sprrab.cex
+    @ 7,25 SAY sch.icsk
+    SELECT sprrab
+ENDIF
+SET COLOR TO &color
+@ nstr,21 SAY tab
+@ nstr,29 SAY cex
+@ nstr,36 SAY fio
+RETURN
+*
+PROCEDURE Strgetsr
+PARAMETERS nstr,npolscr
+PRIVATE nz,ftab
+IF EMPTY(tab)
+    pr_per=.T.
+ELSE
+    pr_per=.F.
+ENDIF
+nz=RECNO()
+DO WHILE .T.
+    @ nstr,21 GET tab
+    READ
+    IF LASTKEY()=27
+         IF pr_per
+              prudalv=prudalv+1
+              DELETE
+         ENDIF
+         RETURN
+    ENDIF
+    ftab=tab
+    SET ORDER TO tab
+    IF SEEK(ftab)
+         SKIP
+         IF ftab=tab
+              DO Net_n WITH 10," Такой код уже есть. Повторите... "
+         ELSE
+              GO nz
+              REPLACE tbn WITH VAL(tab)
+              EXIT
+         ENDIF
+    ELSE
+         DO Net_n WITH 10," Какая-то аваpия в системе. Видимо, pазpушен индекс... "
+         RETURN
+    ENDIF
+    GO nz
+ENDDO
+@ nstr,29 GET cex VALID Poisk_ns('sprrab.cex',.F.,7,25,30) ERROR 'Hет такого кода...'
+@ nstr,36 GET fio
+READ
+RETURN
+*
+PROCEDURE F2sr
+IF RECCOUNT()=0
+    RETURN
+ENDIF
+PRIVATE fpoisk,nz
+SET ORDER TO tab
+nz=RECNO()
+@ 15,35 FILL TO 17,59 COLOR &color20
+SET COLOR TO &color13
+@ 14,34,16,58 BOX box_1
+SET COLOR TO &color14
+fpoisk=SPACE(LEN(tab))
+@ 15,35 SAY " Табельный номер" GET fpoisk
+READ
+IF LASTKEY()=27
+    RETURN
+ENDIF
+SET EXACT OFF
+IF !SEEK(RTRIM(fpoisk))
+    DO Net_n WITH 10,"  Hет такого номера. Повторите... "
+    GO nz
+ENDIF
+SET EXACT ON
+RETURN
+*
+PROCEDURE F3sr
+IF RECCOUNT()=0
+    RETURN
+ENDIF
+PRIVATE fpoisk,nz
+SET ORDER TO fio
+nz=RECNO()
+@ 15,20 FILL TO 17,71 COLOR &color20
+SET COLOR TO &color13
+@ 14,19,16,70 BOX box_1
+SET COLOR TO &color14
+fpoisk=SPACE(LEN(fio))
+@ 15,20 SAY " Фамилия И.О." GET fpoisk
+READ
+IF LASTKEY()=27
+    RETURN
+ENDIF
+SET EXACT OFF
+IF !SEEK(RTRIM(fpoisk))
+    DO Net_n WITH 10," Hет такой фамилии. Повторите... "
+    GO nz
+ENDIF
+SET EXACT ON
+RETURN
+*
+PROCEDURE F4sr
+IF RECCOUNT()=0
+	RETURN
+ENDIF
+PRIVATE nz
+nz=RECNO()
+@ 15,23 FILL TO 17,70 COLOR &color20
+SET COLOR TO &color13
+@ 14,22,16,69 BOX "╔═╗║╝═╚║ "
+SET COLOR TO &color14
+fpoiskk=SPACE(LEN(fio))
+@ 15,23 SAY " Фрагмент" GET fpoiskk
+READ
+IF LASTKEY()=27
+    RETURN
+ENDIF
+fpoiskk=CHRTRAN(STRTRAN(fpoiskk," ",""),"абвгдежзийклмнопрстуфхцчшщыьъэюя","АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЫЬЪЭЮЯ")
+SET FILTER TO (fpoiskk $ CHRTRAN(STRTRAN(fio," ",""),"абвгдежзийклмнопрстуфхцчшщыьъэюя","АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЫЬЪЭЮЯ"))
+GO TOP
+IF EOF()
+    SET FILTER TO
+    DO Net_n WITH 10," Hет такого значения. Повторите... "
+    GO nz
+ELSE
+    ACTIVATE SCREEN
+    DEFINE POPUP listfrag FROM 8,20 TO 18,60 COLOR SCHEME 17 SHADOW IN SCREEN PROMPT FIELD tab+" "+fio;
+           TITLE ' Работник с фрагментом ...'+fpoiskk+'...' SCROLL
+    ON SELECTION POPUP listfrag DEACTIVATE POPUP listfrag
+    ACTIVATE POPUP listfrag
+    SET FILTER TO
+ENDIF
+RETURN
+*
+*
+PROCEDURE Chapwl
+PARAMETERS color4,nstrv,nstrn,ncoll,ncolr,step,npolscrm,scr,scr1,scr2,scr3,scr4
+DEFINE WINDOW Chapwl FROM 6,25 TO 22,64 COLOR SCHEME 19 SHADOW DOUBLE
+ACTIVATE WINDOW Chapwl
+nstrv=5
+nstrn=15
+ncoll=0
+ncolr=37
+step=1
+npolscrm=1
+SET COLOR TO &color4
+@ nstrv-5,ncoll SAY "   С п р а в о ч н и к    в а л ю т"
+@ nstrv-4,ncoll SAY "──────┬───────────────────────────────"
+@ nstrv-3,ncoll SAY " Код  │         Hаименование          "
+@ nstrv-2,ncoll SAY "валюты│            валюты             "
+@ nstrv-1,ncoll SAY "──────┴───────────────────────────────"
+RETURN
+*
+PROCEDURE Strsaywl
+PARAMETERS color,nstr,npolscr
+SET COLOR TO &color
+@ nstr,0 SAY kod
+@ nstr,7 SAY nam
+RETURN
+*
+PROCEDURE Strgetwl
+PARAMETERS nstr,npolscr
+@ nstr,0 GET kod
+@ nstr,7 GET nam
+READ
+RETURN
+*
+*
+PROCEDURE Chapkl
+PARAMETERS color4,nstrv,nstrn,ncoll,ncolr,step,npolscrm,scr,scr1,scr2,scr3,scr4
+nstrv=12
+nstrn=22
+ncoll=1
+ncolr=78
+step=1
+npolscrm=1
+SET COLOR TO &color4
+@ nstrv-5,ncoll FILL TO nstrv+11,ncolr+2 COLOR &color20
+@ nstrv-6,ncoll-1,nstrv+10,ncolr+1 BOX "╔═╗║╝═╚║ "
+@ nstrv-5 ,ncoll-1 SAY "║            С п р а в о ч н и к    к у p с о в    в а л ю т"
+@ nstrv-4 ,ncoll-1 SAY "╟──────┬──────────────────────────────┬────────┬───────────────┬───────────────╢"
+@ nstrv-3 ,ncoll-1 SAY "║ Код  │         Hаименование         │С какого│    Сумма в    │    Сумма в    ║"
+@ nstrv-2 ,ncoll-1 SAY "║валюты│            валюты            │  числа │    рублях     │    валюте     ║"
+@ nstrv-1 ,ncoll-1 SAY "╟──────┴──────────────────────────────┴────────┴───────────────┴───────────────╢"
+@ nstrv+10,ncoll-1 SAY "╚════ F1 ─ Помощь "
+RETURN
+*
+PROCEDURE Strsaykl
+PARAMETERS color,nstr,npolscr
+SET COLOR TO &color
+SELECT spr_val
+SEEK kurs_val.kod
+SELECT kurs_val
+@ nstr, 1 SAY kod
+@ nstr, 8 SAY spr_val.nam
+@ nstr,39 SAY datn
+@ nstr,48 SAY summa
+@ nstr,64 SAY kurs
+RETURN
+*
+PROCEDURE Strgetkl
+PARAMETERS nstr,npolscr
+@ nstr, 1 GET kod VALID Poisk_wl('kurs_val.kod',.F.,nstr,8,30) ERROR 'Hет такой валюты...'
+@ nstr,39 GET datn
+@ nstr,48 GET summa
+@ nstr,64 GET kurs
+READ
+RETURN
+*
+*
+PROCEDURE Chapsk
+PARAMETERS color4,nstrv,nstrn,ncoll,ncolr,step,npolscrm,scr,scr1,scr2,scr3,scr4
+nstrv=11
+nstrn=22
+ncoll=1
+ncolr=78
+step=1
+npolscrm=2
+SET COLOR TO &color4
+@ nstrv-6,ncoll-1,nstrv+11,ncolr+1 BOX "╔═╗║╝═╚║ "
+@ nstrv-6 ,ncoll+5 SAY " F8 - представление в платежке "
+@ nstrv-5 ,ncoll-1 SAY "║            И н ф о р м а ц и я    п о     о р г а н и з а ц и я м            ║"
+@ nstrv-4 ,ncoll-1 SAY "╟───────┬──────────────────────────────┬───────────────┬─────────┬─────────────╢"
+@ nstrv-3 ,ncoll-1 SAY "║ Код   │        Hаименование          │     Город     │   Код   │  Расчетный  ║"
+@ nstrv-2 ,ncoll-1 SAY "║организ│                              │               │  банка  │    счет     ║"
+@ nstrv-1 ,ncoll-1 SAY "╟───────┴──────────────────────────────┴───────────────┴─────────┴─────────────╢"
+@ nstrv+3 ,ncoll-1 SAY "║                                                                              "
+@ nstrv+4 ,ncoll-1 SAY "║                                                                              "
+@ nstrv+5 ,ncoll-1 SAY "║                                                                              "
+@ nstrv+6 ,ncoll-1 SAY "║                                                                              "
+@ nstrv+7 ,ncoll-1 SAY "║                                                                              "
+@ nstrv+11,ncoll-1 SAY "╚ Поиск:F2─код,F3─наим,F4-p/счет,F5-контекст ══ F9-доп.pеквиз ══ F10 - печать "
+SAVE SCREEN TO scr
+@ nstrv-4 ,ncoll-1 SAY "╟───────┬─────────────┬────────────────────────────────────┬───────────────┬───╢"
+@ nstrv-3 ,ncoll-1 SAY "║ Код   │Корреспондир.│          Отделение  банка          │  Город  банка │Код║"
+@ nstrv-2 ,ncoll-1 SAY "║организ│     счет    │                                    │               │pег║"
+@ nstrv-1 ,ncoll-1 SAY "╟───────┴─────────────┴────────────────────────────────────┴───────────────┴───╢"
+@ nstrv+3 ,ncoll-1 SAY "                                                                              ║"
+@ nstrv+4 ,ncoll-1 SAY "                                                                              ║"
+@ nstrv+5 ,ncoll-1 SAY "                                                                              ║"
+@ nstrv+6 ,ncoll-1 SAY "                                                                              ║"
+@ nstrv+7 ,ncoll-1 SAY "                                                                              ║"
+SAVE SCREEN TO scr1
+RESTORE SCREEN FROM scr
+RETURN
+*
+PROCEDURE Strsaysk
+PARAMETERS color,nstr,npolscr
+SET COLOR TO &color
+DO CASE
+CASE npolscr=1
+    @ nstr,1  SAY kkl
+    @ nstr,9  SAY ikl
+    @ nstr,40 SAY gor
+    @ nstr,56 SAY mfo
+    @ nstr,66 SAY sch
+CASE npolscr=2
+    @ nstr,1  SAY kkl
+    @ nstr,9  SAY korr
+    @ nstr,23 SAY otd
+    @ nstr,60 SAY gorb
+    @ nstr,76 SAY pr_reg
+ENDCASE
+RETURN
+*
+PROCEDURE Strgetsk
+PARAMETERS nstr,npolscr
+PRIVATE nz,fkkl,scr,sss
+IF EMPTY(kkl)
+    pr_per=.T.
+    IF nastf_o=1
+         RESTORE FROM tek_b ADDITIVE
+         tek_b_11=LEFT(RIGHT('0000000'+LTRIM(STR(VAL(tek_b_11)+1,7,0)),LEN(RTRIM(tek_b_11)))+SPACE(7),7)
+         REPLACE kkl WITH tek_b_11
+         sss=FULLPATH('tek_b.mem')
+         SAVE TO &sss ALL LIKE tek_b_??
+         RELEASE ALL LIKE tek_b_??
+    ENDIF
+ELSE
+    pr_per=.F.
+ENDIF
+DO CASE
+CASE npolscr=1
+    nz=RECNO()
+    DO WHILE .T.
+         @ nstr,1 GET kkl
+         READ
+         IF LASTKEY()=27
+              IF pr_per
+                   prudalv=prudalv+1
+                   DELETE
+              ENDIF
+              RETURN
+         ENDIF
+         fkkl=kkl
+         SET ORDER TO kkl
+         IF SEEK(fkkl)
+              SKIP
+              IF fkkl=kkl
+                   DO Net_n WITH 10," Такой код уже есть. Повторите... "
+              ELSE
+                   GO nz
+                   EXIT
+              ENDIF
+         ELSE
+              DO Net_n WITH 10," Какая-то аваpия в системе. Видимо, pазpушен индекс... "
+              RETURN
+         ENDIF
+         GO nz
+    ENDDO
+    @ nstr,9  GET ikl
+    @ nstr,40 GET gor
+    @ nstr,56 GET mfo
+    @ nstr,66 GET sch
+CASE npolscr=2
+    @ nstr, 9 GET korr
+    @ nstr,23 GET otd
+    @ nstr,60 GET gorb
+    @ nstr,76 GET pr_reg VALID Poisk_tg('skl.pr_reg') ERROR 'Hет такого кода...'
+ENDCASE
+READ
+IF (LASTKEY()#27.OR.READKEY()=271.OR.READKEY()=15).AND.npolscr=2
+    SAVE SCREEN TO scr
+    DO F9sk
+    RESTORE SCREEN FROM scr
+ENDIF
+RETURN
+*
+PROCEDURE F2sk
+PRIVATE i,fpoisk,nz
+nz=RECNO()
+@ 15,34 FILL TO 17,48 COLOR &color20
+SET COLOR TO &color13
+@ 14,33,16,47 BOX "╔═╗║╝═╚║ "
+SET ORDER TO kkl
+SET COLOR TO &color14
+fpoisk=SPACE(LEN(kkl))
+@ 15,34 SAY " Код" GET fpoisk
+READ
+IF LASTKEY()=27
+    RETURN
+ENDIF
+SET EXACT OFF
+IF !SEEK(RTRIM(fpoisk))
+    DO Net_n WITH 10," Hет такого кода. Повторите... "
+    IF RECCOUNT()#0
+         GO nz
+    ENDIF
+ENDIF
+SET EXACT ON
+RETURN
+*
+PROCEDURE F3sk
+IF RECCOUNT()=0
+    RETURN
+ENDIF
+PRIVATE fpoisk,nz
+nz=RECNO()
+@ 15,19 FILL TO 17,65 COLOR &color20
+SET COLOR TO &color13
+@ 14,18,16,64 BOX "╔═╗║╝═╚║ "
+SET COLOR TO &color14
+SET ORDER TO ikl
+fpoisk=SPACE(LEN(ikl))
+@ 15,19 SAY " Hаименование" GET fpoisk
+READ
+IF LASTKEY()=27
+    RETURN
+ENDIF
+fpoisk=CHRTRAN(STRTRAN(fpoisk," ",""),"абвгдежзийклмнопрстуфхцчшщыьъэюя","АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЫЬЪЭЮЯ")
+SET EXACT OFF
+IF !SEEK(RTRIM(fpoisk))
+    DO Net_n WITH 10," Hет такого наименования. Повторите... "
+    GO nz
+ENDIF
+SET EXACT ON
+RETURN
+*
+PROCEDURE F4sk
+PRIVATE fpoisk,nz
+nz=RECNO()
+@ 10,26 FILL TO 12,56 COLOR &color20
+SET COLOR TO &color13
+@ 9,25,11,55 BOX "╔═╗║╝═╚║ "
+SET COLOR TO &color14
+fpoisk=SPACE(LEN(skl.sch))
+@ 10,26 SAY " Расчетный счет" GET fpoisk
+READ
+IF LASTKEY()=27
+    RETURN
+ENDIF
+SET ORDER TO sch
+SET EXACT OFF
+IF !SEEK(RTRIM(fpoisk))
+    DO Net_n WITH 13,'Hет такого pасчетного счета...'
+    IF RECCOUNT()#0
+         GO nz
+    ENDIF
+ENDIF
+SET EXACT ON
+RETURN
+*
+PROCEDURE F5sk
+IF RECCOUNT()=0
+	RETURN
+ENDIF
+PRIVATE nz
+nz=RECNO()
+@ 15,23 FILL TO 17,65 COLOR &color20
+SET COLOR TO &color13
+@ 14,22,16,64 BOX "╔═╗║╝═╚║ "
+SET COLOR TO &color14
+fpoiskk=SPACE(LEN(ikl))
+@ 15,23 SAY " Фрагмент" GET fpoiskk
+READ
+IF LASTKEY()=27
+    RETURN
+ENDIF
+fpoiskk=CHRTRAN(STRTRAN(fpoiskk," ",""),"абвгдежзийклмнопрстуфхцчшщыьъэюя","АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЫЬЪЭЮЯ")
+SET FILTER TO (fpoiskk $ CHRTRAN(STRTRAN(ikl," ",""),"абвгдежзийклмнопрстуфхцчшщыьъэюя","АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЫЬЪЭЮЯ"))
+GO TOP
+IF EOF()
+    SET FILTER TO
+    DO Net_n WITH 10," Hет такого значения. Повторите... "
+    GO nz
+ELSE
+    ACTIVATE SCREEN
+    DEFINE POPUP listfrag FROM 8,20 TO 18,60 COLOR SCHEME 17 SHADOW IN SCREEN PROMPT FIELD kkl+" "+ikl;
+           TITLE ' Организации с фрагментом ...'+fpoiskk+'...' SCROLL
+    ON SELECTION POPUP listfrag DEACTIVATE POPUP listfrag
+    ACTIVATE POPUP listfrag
+    SET FILTER TO
+ENDIF
+RETURN
+*
+PROCEDURE F8sk
+IF RECCOUNT()=0
+    RETURN
+ENDIF
+DEFINE WINDOW Zapros FROM 8,3 TO 15,77 COLOR SCHEME 19 SHADOW DOUBLE
+ACTIVATE WINDOW Zapros
+SET COLOR TO &color13
+@ 0,1 SAY 'Получатель'+SPACE(45)+'---------------'
+@ 1,1 SAY 'Код'+SPACE(42)+'----------|    сч. N    |'
+@ 2,1 SAY SPACE(45)+'|   Код   |             |'
+@ 3,1 SAY 'Банк пол.'+SPACE(36)+'|         |             |'
+@ 4,1 SAY SPACE(45)+'------------------------|'
+@ 5,1 SAY 'в г.'+SPACE(65)+'|'
+SET COLOR TO &color12
+@ 0,12 GET ikl
+@ 0,42 GET ikl1
+@ 1, 5 GET unn
+@ 1,16 GET ikld
+@ 2, 1 GET ikldd
+@ 2,57 GET sch
+@ 3,11 GET otd
+@ 3,47 GET mfo
+@ 3,57 GET korr
+@ 4, 1 GET otdd
+@ 5, 6 GET gorb
+READ
+RELEASE WINDOW Zapros
+ACTIVATE SCREEN
+RETURN
+*
+PROCEDURE F9sk
+@ 13,22 FILL TO 20,79 COLOR &color20
+SET COLOR TO &color13
+@ 12,21,19,78 BOX box_1
+SET COLOR TO &color14
+@ 13,23 SAY 'Доп.наим.' GET ikl1
+@ 14,33 GET ikld
+@ 15,33 GET ikldd
+@ 16,23 SAY 'Количество дней документообоpота' GET kol_dn
+@ 17,23 SAY 'Пpоцент пени за день пpосpочки..' GET pr_pen
+@ 18,23 SAY 'Учетный номер налогоплательщика.' GET unn
+READ
+RETURN
+*
+*
+PROCEDURE Chapav
+PARAMETERS color4,nstrv,nstrn,ncoll,ncolr,step,npolscrm,scr,scr1,scr2,scr3,scr4
+nstrv=11
+nstrn=22
+ncoll=1
+ncolr=78
+step=1
+npolscrm=1
+SET COLOR TO &color4
+@ nstrv-9,ncoll-1,nstrv+11,ncolr+1 BOX "╔═╗║╝═╚║ "
+@ nstrv-8 ,ncoll-1 SAY "║                 О б о p о т    п о    p а б о т н и к у"
+@ nstrv-7 ,ncoll-1 SAY "╟──────────────────────────────────────────────────────────────────────────────╢"
+@ nstrv-6 ,ncoll-1 SAY "║ Работник:"
+@ nstrv-5 ,ncoll-1 SAY "╟──────┬────┬───────────────────────┬───────────────────────┬──────────────────╢"
+@ nstrv-4 ,ncoll-1 SAY "║      │    │ Сальдо на начало мес. │    Обоpот за месяц    │ Сальдо на конец  ║"
+@ nstrv-3 ,ncoll-1 SAY "║ Табел│Бал.├───────────┬───────────┼───────────┬───────────┼────────┬─────────╢"
+@ nstrv-2 ,ncoll-1 SAY "║ номер│счет│    дебет  │  кредит   │    дебет  │  кредит   │  дебет │  кредит ║"
+@ nstrv-1 ,ncoll-1 SAY "╟──────┴────┴───────────┴───────────┴───────────┴───────────┴────────┴─────────╢"
+@ nstrv+11,ncoll-1 SAY "╠ F2─поиск ══ F3-касса ══ F4-вн.приход ══ F5- авансовые отчеты ══ F6-вн.расход ╣"
+@ nstrv+12,ncoll-1 SAY "╚═ F7 - удержания по з/плате ════ Задолженность: F9 ─ отметка, F10 - печать ═══╝"
+RETURN
+*
+PROCEDURE Strsayav
+PARAMETERS color,nstr,npolscr
+IF !pr_v_pr
+    SET COLOR TO &color21
+    SELECT sprrab
+    SET ORDER TO tab
+    SEEK ostrkr.tab
+    @ 5,12 SAY sprrab.fio
+    SELECT ostrkr
+ENDIF
+SET COLOR TO &color
+@ nstr, 1 SAY tab
+@ nstr, 7 SAY pr_vkl
+@ nstr, 8 SAY bs
+@ nstr,13 SAY db
+@ nstr,25 SAY kr
+IF smd#0
+    @ nstr,37 SAY smd
+ENDIF
+IF smk#0
+    @ nstr,49 SAY smk
+ENDIF
+sss=db-kr+smd-smk
+IF sss>0
+    @ nstr,61 SAY  sss PICTURE '99999999.99'
+ELSE
+    @ nstr,68 SAY -sss PICTURE '99999999.99'
+ENDIF
+RETURN
+*
+PROCEDURE Strgetav
+PARAMETERS nstr,npolscr
+IF EMPTY(tab)
+    @ 5,12 SAY SPACE(30)
+    REPLACE bs WITH ffbs
+ENDIF
+@ nstr,1 GET tab VALID Poisk_ta('ostrkr.tab',.F.,5,12,30) ERROR 'Hет такого кода...'
+@ nstr,8 GET bs VALID Poisk_sc('ostrkr.bs',.F.,.F.,0,0,0,' ','.F.') ERROR 'Hет такого счета...'
+READ
+RETURN
+*
+PROCEDURE F2avr
+IF RECCOUNT()=0
+    RETURN
+ENDIF
+PRIVATE fpoisk,nz,fpoisk1,fpoisk2
+nz=RECNO()
+@ 14,24 FILL TO 17,49 COLOR &color20
+SET COLOR TO &color13
+@ 13,23,16,48 BOX box_1
+SET COLOR TO &color14
+fpoisk1=bs
+fpoisk2=SPACE(LEN(sprrab.tab))
+@ 14,25 SAY "Балансовый счет" GET fpoisk1 VALID Poisk_sc('fpoisk1',.T.,.F.,0,0,0,' ','.F.') ERROR 'Hет такого счета...'
+@ 15,25 SAY "Табельный номер" GET fpoisk2 VALID Poisk_ta('fpoisk2',.T.,0,0,0) ERROR 'Hет такого табельного номера...'
+READ
+IF EMPTY(fpoisk1)
+     RETURN
+ENDIF
+SET ORDER TO bs_tab
+SET EXACT OFF
+SEEK RTRIM(fpoisk1+fpoisk2)
+SET EXACT ON
+IF !FOUND()
+    DO Net_n WITH 10," Hет такой инфоpмации. Повторите... "
+    GO nz
+ENDIF
+RETURN
+*
+PROCEDURE F3av
+SELECT bk
+SET ORDER TO bk2
+SET EXACT OFF
+SEEK ostrkr.bs+ostrkr.tab
+SET EXACT ON
+DO Vvodn WITH "Chapba","Strsayba","Strgetba",.T.,.T.,.T.,.F.,"(LEFT(kp,6)#ostrkr.tab.OR.kor#ostrkr.bs)",;
+              "","","","","","","","","","","Udal_kas",.T.
+SELECT ostrkr
+RETURN
+*
+PROCEDURE F4av
+SELECT vn_71
+SET ORDER TO bs_tabp
+SEEK ostrkr.bs+ostrkr.tab
+DO Vvodn WITH "Chapvn","Strsayvn","Strgetvp",.T.,.T.,.T.,.F.,"(tabp#ostrkr.tab.OR.bs#ostrkr.bs)",;
+              "","","","","","","","","","","Udal_vn",.T.
+SELECT ostrkr
+RETURN
+*
+PROCEDURE F5av
+SELECT avotr
+SET ORDER TO bs_tab
+SET EXACT OFF
+SEEK ostrkr.bs+ostrkr.tab
+SET EXACT ON
+DO Vvodn WITH "Chapvv","Strsayvv","Strgetvv",.T.,.T.,.T.,.F.,"(tab#ostrkr.tab.OR.bs#ostrkr.bs)",;
+              "","","","","","F6sv","","","","","Udal_av",.T.
+SELECT ostrkr
+RETURN
+*
+PROCEDURE F6av
+SELECT vn_71
+SET ORDER TO bs_tabo
+SEEK ostrkr.bs+ostrkr.tab
+DO Vvodn WITH "Chapvn","Strsayvn","Strgetvr",.T.,.T.,.T.,.F.,"(tabo#ostrkr.tab.OR.bs#ostrkr.bs)",;
+              "","","","","","","","","","","Udal_vn",.T.
+SELECT ostrkr
+RETURN
+*
+PROCEDURE F7av
+SELECT yd_71
+SEEK ostrkr.bs+ostrkr.tab
+DO Vvodn WITH "Chapyd","Strsayyd","",.F.,.F.,.F.,.F.,"(tbn#ostrkr.tab.OR.bs#ostrkr.bs)",;
+              "","","","","","","","","","","",.T.
+SELECT ostrkr
+RETURN
+*
+PROCEDURE F9av
+PRIVATE ffsum
+IF pr_vkl=' '
+    SELECT kas_71
+    IF SEEK(ostrkr.bs+ostrkr.tab).AND.symk#0
+         ffsum=symk
+    ELSE
+         ffsum=ostrkr.db-ostrkr.kr-ostrkr.smk+ostrkr.smd
+    ENDIF
+    @ 19,27 FILL TO 21,63 COLOR &color20
+    SET COLOR TO &color13
+    @ 18,26,20,62 BOX box_1
+    SET COLOR TO &color14
+    @ 19,28 SAY 'Сумма к удеpжанию' GET ffsum PICTURE '999999999999.99'
+    READ
+    IF LASTKEY()=27
+         SELECT ostrkr
+         RETURN
+    ENDIF
+    IF tbn#ostrkr.tab
+         APPEND BLANK
+         REPLACE bs WITH ostrkr.bs,tbn WITH ostrkr.tab
+    ENDIF
+    REPLACE symk WITH ffsum
+           SELECT yd_71
+           GO TOP
+           SEEK(ostrkr.bs+ostrkr.tab)
+    IF tbn#ostrkr.tab
+              APPEND BLANK
+              REPLACE bs WITH ostrkr.bs,tbn WITH ostrkr.tab
+           ENDIF
+              REPLACE symk WITH ffsum
+    SELECT ostrkr
+    REPLACE pr_vkl WITH '*'
+ELSE
+    REPLACE pr_vkl WITH ' '
+    SELECT kas_71
+    IF SEEK(ostrkr.bs+ostrkr.tab)
+         REPLACE symk WITH 0
+    ENDIF
+         SELECT yd_71
+         IF SEEK(ostrkr.bs+ostrkr.tab)
+            REPLACE symk WITH 0
+         ENDIF
+    SELECT ostrkr
+ENDIF
+RETURN
+*
+*
+PROCEDURE Chapor
+PARAMETERS color4,nstrv,nstrn,ncoll,ncolr,step,npolscrm,scr,scr1,scr2,scr3,scr4
+nstrv=11
+nstrn=22
+ncoll=7
+ncolr=73
+step=1
+npolscrm=1
+SET COLOR TO &color4
+@ nstrv-5,ncoll FILL TO nstrv+12,ncolr+2 COLOR &color20
+@ nstrv-6,ncoll-1,nstrv+11,ncolr+1 BOX "╔═╗║╝═╚║ "
+@ nstrv-5 ,ncoll-1 SAY "║            О с т а т к и    по    р а б о т н и к а м "
+@ nstrv-4 ,ncoll-1 SAY "╟───────┬──────┬────────────────────┬───────────────┬───────────────╢"
+@ nstrv-3 ,ncoll-1 SAY "║Баланс.│ Табел│     Фамилия И.О.   │  Cумма дебет  │ Cумма кредит"
+@ nstrv-2 ,ncoll-1 SAY "║ счет  │ номер│                    │               │"
+@ nstrv-1 ,ncoll-1 SAY "╟───────┴──────┴────────────────────┴───────────────┴───────────────╢"
+@ nstrv+11,ncoll-1 SAY "╚═ F1 ─ помощь ═══════ F2 ─ поиск "
+RETURN
+*
+PROCEDURE Strsayor
+PARAMETERS color,nstr,npolscr
+IF !pr_v_pr
+    SET COLOR TO &color21
+    IF nastf_8=1
+         SELECT spr_bs
+         SET ORDER TO bs
+         SEEK ostrk.bs
+         SELECT ostrk
+         @ 9,43 SAY IIF(db_val=0,SPACE(15),vid_val+STR(db_val,9,2))
+         @ 9,59 SAY IIF(kr_val=0,SPACE(15),vid_val+STR(kr_val,9,2))
+    ENDIF
+ENDIF
+SET COLOR TO &color
+SELECT sprrab
+SET ORDER TO tab
+SELECT ostrk
+@ nstr, 8 SAY bs
+@ nstr,15 SAY tab
+@ nstr,22 SAY LEFT(sprrab.fio,20)
+@ nstr,43 SAY db
+@ nstr,59 SAY kr
+RETURN
+*
+PROCEDURE Strgetor
+PARAMETERS nstr,npolscr
+@ nstr, 8 GET bs VALID Poisk_sc('ostrk.bs',.F.,.F.,0,0,0,' ','.F.') ERROR 'Hет такого счета...'
+@ nstr,15 GET tab VALID Poisk_ta('ostrk.tab',.F.,nstr,22,20) ERROR 'Hет такого кода...'
+IF nastf_8=1
+    READ
+    IF spr_bs.pr_val='1'
+            *DO Kurs_val WITH 'ostrk.vid_val',CTOD('01/'+STR(ntmec,2)+'/'+RIGHT(DTOC(DATE()),2)),'Дебет ','ostrk.db_val','ostrk.db','Кредит','ostrk.kr_val','ostrk.kr'
+         DO Kurs_val WITH 'ostrk.vid_val',CTOD('01/'+STR(ntmec,2)+'/'+nastf_b),'Дебет ','ostrk.db_val','ostrk.db','Кредит','ostrk.kr_val','ostrk.kr'
+         @ 9,43 SAY IIF(db_val=0,SPACE(15),vid_val+STR(db_val,9,2))
+         @ 9,59 SAY IIF(kr_val=0,SPACE(15),vid_val+STR(kr_val,9,2))
+    ENDIF
+ENDIF
+@ nstr,43 GET db
+@ nstr,59 GET kr
+READ
+RETURN
+*
+*
+PROCEDURE Chapvn
+PARAMETERS color4,nstrv,nstrn,ncoll,ncolr,step,npolscrm,scr,scr1,scr2,scr3,scr4
+nstrv=11
+nstrn=22
+ncoll=7
+ncolr=61
+step=1
+npolscrm=1
+SET COLOR TO &color4
+@ nstrv-8,ncoll FILL TO nstrv+12,ncolr+2 COLOR &color20
+@ nstrv-9,ncoll-1,nstrv+11,ncolr+1 BOX "╔═╗║╝═╚║ "
+@ nstrv-8 ,ncoll-1 SAY "║           Внутpенняя пеpедача денежных сpедств"
+@ nstrv-7 ,ncoll-1 SAY "╟───────────────────────────────────────────────────────╢"
+@ nstrv-6 ,ncoll-1 SAY "║ От кого:"
+@ nstrv-5 ,ncoll-1 SAY "║ К кому:"
+@ nstrv-4 ,ncoll-1 SAY "╟─────┬──────┬──────────┬───────┬───────┬───────────────╢"
+@ nstrv-3 ,ncoll-1 SAY "║ Бал.│Hомеp │  Дата    │Таб. N │Таб. N │     Cумма"
+@ nstrv-2 ,ncoll-1 SAY "║ счет│докум.│документа │от кого│ к кому│"
+@ nstrv-1 ,ncoll-1 SAY "╟─────┴──────┴──────────┴───────┴───────┴───────────────╢"
+@ nstrv+11,ncoll-1 SAY "╚═ F1 ─ помощь ═══════  F2 ─ поиск по коду от кого "
+RETURN
+*
+PROCEDURE Strsayvn
+PARAMETERS color,nstr,npolscr
+IF !pr_v_pr
+    SET COLOR TO &color21
+    SELECT sprrab
+    SET ORDER TO tab
+    SEEK vn_71.tabo
+    @ 5,17 SAY sprrab.fio
+    SEEK vn_71.tabp
+    @ 6,17 SAY sprrab.fio
+    SELECT spr_bs
+    SET ORDER TO bs
+    SEEK vn_71.bs
+    SELECT vn_71
+    gfbs=bs
+    gfdat=dat
+    gftab=tabo
+    gfnrd=nrd
+    IF nastf_8=1
+         @ 9,47 SAY IIF(sm_val=0,SPACE(15),vid_val+STR(sm_val,9,2))
+    ELSE
+         @ 9,47 SAY SPACE(15)
+    ENDIF
+ENDIF
+SET COLOR TO &color
+@ nstr, 8 SAY bs
+@ nstr,13 SAY nrd
+@ nstr,20 SAY dat
+@ nstr,31 SAY tabo
+@ nstr,39 SAY tabp
+@ nstr,47 SAY summa
+RETURN
+*
+PROCEDURE Strgetvn
+PARAMETERS nstr,npolscr
+IF EMPTY(tabo)
+    REPLACE bs WITH gfbs,dat WITH gfdat,tabo WITH gftab,nrd WITH gfnrd
+ENDIF
+@ nstr, 8 GET bs VALID Poisk_sc('vn_71.bs',.F.,.F.,0,0,0,' ','.F.') ERROR 'Hет такого счета...'
+@ nstr,13 GET nrd
+@ nstr,20 GET dat
+@ nstr,31 GET tabo VALID Poisk_ta('vn_71.tabo',.F.,5,17,20) ERROR 'Hет такого кода...'
+@ nstr,39 GET tabp VALID Poisk_ta('vn_71.tabp',.F.,6,17,20) ERROR 'Hет такого кода...'
+IF nastf_8=1
+    READ
+    IF spr_bs.pr_val='1'
+         DO Kurs_val WITH 'vn_71.vid_val',vn_71.dat,'Сумма','vn_71.sm_val','vn_71.summa','','',''
+         @ 9,47 SAY IIF(sm_val=0,SPACE(15),vid_val+STR(sm_val,9,2))
+    ENDIF
+ENDIF
+@ nstr,47 GET summa
+READ
+RETURN
+*
+PROCEDURE Strgetvp
+PARAMETERS nstr,npolscr
+PRIVATE sss,ftab
+IF EMPTY(tabo)
+    REPLACE bs WITH ostrkr.bs,tabp WITH ostrkr.tab
+ENDIF
+ftab=tabo
+sss=summa
+@ nstr, 8 SAY bs
+@ nstr,39 SAY tabp
+@ nstr,13 GET nrd
+@ nstr,20 GET dat
+@ nstr,31 GET tabo VALID Poisk_ta('vn_71.tabo',.F.,5,17,20) ERROR 'Hет такого кода...'
+IF nastf_8=1
+    READ
+    IF spr_bs.pr_val='1'
+         DO Kurs_val WITH 'vn_71.vid_val',vn_71.dat,'Сумма','vn_71.sm_val','vn_71.summa','','',''
+         @ 9,47 SAY IIF(sm_val=0,SPACE(15),vid_val+STR(sm_val,9,2))
+    ENDIF
+ENDIF
+@ nstr,47 GET summa
+READ
+DO CASE
+CASE sss=0.AND.summa=0.OR.sss=summa.AND.ftab=tabo
+    RETURN
+CASE EMPTY(ftab).AND.!EMPTY(tabo)
+    REPLACE ostrkr.smd WITH ostrkr.smd+vn_71.summa
+    SELECT ostrkr
+    nz=RECNO()
+    IF !SEEK(vn_71.bs+vn_71.tabo)
+         APPEND BLANK
+         REPLACE bs WITH vn_71.bs,tab WITH vn_71.tabo
+    ENDIF
+    REPLACE ostrkr.smk WITH ostrkr.smk+vn_71.summa
+    GO nz
+CASE ftab=tabo
+    REPLACE ostrkr.smd WITH ostrkr.smd+vn_71.summa-sss
+    SELECT ostrkr
+    nz=RECNO()
+    SEEK vn_71.bs+vn_71.tabo
+    REPLACE ostrkr.smk WITH ostrkr.smk+vn_71.summa-sss
+    GO nz
+CASE ftab#tabo
+    REPLACE ostrkr.smd WITH ostrkr.smd+vn_71.summa-sss
+    SELECT ostrkr
+    nz=RECNO()
+    SEEK vn_71.bs+ftab
+    REPLACE ostrkr.smk WITH ostrkr.smk-sss
+    IF !SEEK(vn_71.bs+vn_71.tabo)
+         APPEND BLANK
+         REPLACE bs WITH vn_71.bs,tab WITH vn_71.tabo
+    ENDIF
+    REPLACE ostrkr.smk WITH ostrkr.smk+vn_71.summa
+    GO nz
+ENDCASE
+SELECT vn_71
+RETURN
+*
+PROCEDURE Strgetvr
+PARAMETERS nstr,npolscr
+PRIVATE sss,ftab
+IF EMPTY(tabo)
+    REPLACE bs WITH ostrkr.bs,tabo WITH ostrkr.tab
+ENDIF
+ftab=tabp
+sss=summa
+@ nstr, 8 SAY bs
+@ nstr,31 SAY tabo
+@ nstr,13 GET nrd
+@ nstr,20 GET dat
+@ nstr,39 GET tabp VALID Poisk_ta('vn_71.tabp',.F.,6,17,20) ERROR 'Hет такого кода...'
+IF nastf_8=1
+    READ
+    IF spr_bs.pr_val='1'
+         DO Kurs_val WITH 'vn_71.vid_val',vn_71.dat,'Сумма','vn_71.sm_val','vn_71.summa','','',''
+         @ 9,47 SAY IIF(sm_val=0,SPACE(15),vid_val+STR(sm_val,9,2))
+    ENDIF
+ENDIF
+@ nstr,47 GET summa
+READ
+DO CASE
+CASE sss=0.AND.summa=0.OR.sss=summa.AND.ftab=tabp
+    RETURN
+CASE EMPTY(ftab).AND.!EMPTY(tabp)
+    REPLACE ostrkr.smk WITH ostrkr.smk+vn_71.summa
+    SELECT ostrkr
+    nz=RECNO()
+    IF !SEEK(vn_71.bs+vn_71.tabp)
+         APPEND BLANK
+         REPLACE bs WITH vn_71.bs,tab WITH vn_71.tabp
+    ENDIF
+    REPLACE ostrkr.smd WITH ostrkr.smd+vn_71.summa
+    GO nz
+CASE ftab=tabp
+    REPLACE ostrkr.smk WITH ostrkr.smk+vn_71.summa-sss
+    SELECT ostrkr
+    nz=RECNO()
+    SEEK vn_71.bs+vn_71.tabp
+    REPLACE ostrkr.smd WITH ostrkr.smd+vn_71.summa-sss
+    GO nz
+CASE ftab#tabp
+    REPLACE ostrkr.smk WITH ostrkr.smk+vn_71.summa-sss
+    SELECT ostrkr
+    nz=RECNO()
+    SEEK vn_71.bs+ftab
+    REPLACE ostrkr.smd WITH ostrkr.smd-sss
+    IF !SEEK(vn_71.bs+vn_71.tabp)
+         APPEND BLANK
+         REPLACE bs WITH vn_71.bs,tab WITH vn_71.tabp
+    ENDIF
+    REPLACE ostrkr.smd WITH ostrkr.smd+vn_71.summa
+    GO nz
+ENDCASE
+SELECT vn_71
+RETURN
+*
+PROCEDURE Udal_vn
+PARAMETERS pr_ud
+PRIVATE ftab
+ftab=ostrkr.tab
+SELECT ostrkr
+SEEK vn_71.bs+vn_71.tabo
+REPLACE ostrkr.smd WITH ostrkr.smd+vn_71.summa
+SEEK vn_71.bs+vn_71.tabp
+REPLACE ostrkr.smk WITH ostrkr.smk+vn_71.summa
+SEEK vn_71.bs+ftab
+SELECT vn_71
+pr_ud=.T.
+RETURN
+*
+PROCEDURE F2vn
+PRIVATE fpoisk,nz,fpoisk1,fpoisk2
+nz=RECNO()
+@ 14,24 FILL TO 17,52 COLOR &color20
+SET COLOR TO &color13
+@ 13,23,16,51 BOX "┌─┐│┘─└│ "
+SET COLOR TO &color14
+fpoisk1=bs
+fpoisk2=SPACE(LEN(sprrab.tab))
+@ 14,25 SAY "Балансовый счет..." GET fpoisk1
+@ 15,25 SAY "Табельный номер..." GET fpoisk2
+READ
+IF LASTKEY()=27.OR.EMPTY(fpoisk1).AND.EMPTY(fpoisk2)
+     RETURN
+ENDIF
+SET ORDER TO bs_tabo
+SET EXACT OFF
+SEEK RTRIM(fpoisk1+fpoisk2)
+SET EXACT ON
+IF !FOUND()
+    DO Net_n WITH 10," Hет такой инфоpмации. Повторите... "
+    IF RECCOUNT()#0
+         GO nz
+    ENDIF
+ENDIF
+RETURN
+*
+*
+PROCEDURE Chapsc
+PARAMETERS color4,nstrv,nstrn,ncoll,ncolr,step,npolscrm,scr,scr1,scr2,scr3,scr4
+nstrv=11
+nstrn=21
+ncoll=35
+ncolr=77
+step=1
+npolscrm=1
+@ nstrv-4,ncoll FILL TO nstrv+11,ncolr+2 COLOR &color20
+SET COLOR TO &color4
+@ nstrv-5,ncoll-1,nstrv+10,ncolr+1 BOX "╔═╗║╝═╚║ "
+@ nstrv-4 ,ncoll-1 SAY "║      Справочник подразделений  (МОЛ)"
+@ nstrv-3 ,ncoll-1 SAY "╟────────────┬──────────────────────────────╢"
+@ nstrv-2 ,ncoll-1 SAY "║    Код     │       Hаименование"
+@ nstrv-1 ,ncoll-1 SAY "╟────────────┴──────────────────────────────╢"
+@ nstrv+10,ncoll-1 SAY "╚ Поиск:F2─код,F3-наименование ══ F10-печать"
+RETURN
+*
+PROCEDURE Strsaysc
+PARAMETERS color,nstr,npolscr
+SET COLOR TO &color
+@ nstr,37 SAY nsk
+@ nstr,48 SAY icsk
+RETURN
+*
+PROCEDURE Strgetsc
+PARAMETERS nstr,npolscr
+PRIVATE scr
+@ nstr,37 GET nsk
+@ nstr,48 GET icsk
+READ
+RETURN
+*
+PROCEDURE F2sc
+PRIVATE fpoisk,nz,scr
+nz=RECNO()
+@ 8,42 FILL TO 12,62 COLOR &color20
+SET COLOR TO &color13
+@ 7,41,11,61 BOX "╔═╗║╝═╚║ "
+@ 7,46 SAY " Поиск МОЛ "
+@ 8,42,10,60 BOX "┌─┐│┘─└│ "
+SET ORDER TO sch
+SET COLOR TO &color14
+@ 9,43 SAY " Код МОЛ..."
+fpoisk=SPACE(LEN(nsk))
+@ 9,55 GET fpoisk
+READ
+IF LASTKEY()=27
+    RETURN
+ENDIF
+IF SEEK(RTRIM(fpoisk))
+    RETURN
+ENDIF
+DO Net_n WITH 10," Hет такого МОЛ. Повторите... "
+IF RECCOUNT()#0
+     GO nz
+ENDIF
+RETURN
+*
+PROCEDURE F3sc
+IF RECCOUNT()=0
+    RETURN
+ENDIF
+PRIVATE fpoisk,nz,scr
+nz=RECNO()
+fpoisk=SPACE(LEN(icsk))
+DEFINE WINDOW Zapros FROM 7,17 TO 9,62 COLOR SCHEME 19 SHADOW DOUBLE
+ACTIVATE WINDOW Zapros
+SET COLOR TO &color14
+@ 0,1 SAY "Наименование" GET fpoisk
+READ
+RELEASE WINDOW Zapros
+IF EMPTY(fpoisk)
+    RETURN
+ENDIF
+fpoisk=CHRTRAN(STRTRAN(fpoisk," ",""),"абвгдежзийклмнопрстуфхцчшщыьъэюя","АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЫЬЪЭЮЯ")
+SET ORDER TO nam
+SET EXACT OFF
+IF !SEEK(RTRIM(fpoisk))
+    DO Net_n WITH 10," Hет такого МОЛ. Повторите... "
+    GO nz
+ENDIF
+SET EXACT ON
+RETURN
+*
+*
+PROCEDURE Chapvv
+PARAMETERS color4,nstrv,nstrn,ncoll,ncolr,step,npolscrm,scr,scr1,scr2,scr3,scr4
+nstrv=11
+nstrn=22
+ncoll=24
+ncolr=67
+step=1
+npolscrm=1
+@ nstrv-7,ncoll FILL TO nstrv+12,ncolr+2 COLOR &color20
+SET COLOR TO &color4
+@ nstrv-8,ncoll-1,nstrv+11,ncolr+1 BOX "╔═╗║╝═╚║ "
+@ nstrv-7 ,ncoll-1 SAY "║            Авансовые отчеты"
+@ nstrv-6 ,ncoll-1 SAY "╟────────────────────────────────────────────╢"
+@ nstrv-5 ,ncoll-1 SAY '║ '+nastf_s+':'
+@ nstrv-4 ,ncoll-1 SAY "╟─────┬──────────┬────┬──────┬───────────────╢"
+@ nstrv-3 ,ncoll-1 SAY '║Номер│   Дата   │Корр│'+nastf_s+'│      Сумма'
+@ nstrv-2 ,ncoll-1 SAY '║докум│          │счет│      │'
+@ nstrv-1 ,ncoll-1 SAY "╟─────┴──────────┴────┴──────┴───────────────╢"
+@ nstrv+11,ncoll-1 SAY "╚═ F1 ─ помощь ═══ F6 ─ расчет "
+RETURN
+*
+PROCEDURE Strsayvv
+PARAMETERS color,nstr,npolscr
+IF !pr_v_pr
+    SET COLOR TO &color21
+    IF nastf_8=1
+         SELECT spr_bs
+         SET ORDER TO bs
+         SEEK avotr.bs
+         SELECT avotr
+         IF spr_bs.pr_val='1'
+              @ 9,53 SAY IIF(sm_val=0,SPACE(15),vid_val+STR(sm_val,9,2))
+         ELSE
+              @ 9,53 SAY SPACE(15)
+         ENDIF
+    ENDIF
+ENDIF
+SET COLOR TO &color
+@ nstr,24 SAY nvx
+@ nstr,30 SAY dat
+@ nstr,41 SAY kor
+@ nstr,46 SAY nzk
+@ nstr,53 SAY smk
+RETURN
+*
+PROCEDURE Strgetvv
+PARAMETERS nstr,npolscr,scr
+PRIVATE sss,fprval
+fprval=.F.
+IF nastf_8=1
+    SELECT spr_bs
+    SET ORDER TO bs
+    SEEK ostrkr.bs
+    fprval=IIF(spr_bs.pr_val='1',.T.,.F.)
+    SELECT avotr
+ENDIF
+IF EMPTY(tab)
+    @ 6,32 SAY SPACE(30)
+    REPLACE tab WITH ostrkr.tab,bs WITH ostrkr.bs
+ENDIF
+sss=smk
+@ nstr,24 GET nvx
+@ nstr,30 GET dat
+@ nstr,41 GET kor VALID Poisk_sc('avotr.kor',.F.,.F.,0,0,0,' ','.F.') ERROR ' Hет такого счета...'
+@ nstr,46 GET nzk VALID Poisk_nn(6,32,30) ERROR 'Hет такого кода...'
+IF fprval.AND.tek_b_9=0
+    READ
+    DO Kurs_val WITH 'avotr.vid_val',avotr.dat,'Сумма','avotr.sm_val','avotr.smk','','',''
+    @ 9,53 SAY IIF(sm_val=0,SPACE(15),vid_val+STR(sm_val,9,2))
+ENDIF
+IF tek_b_9=0
+    @ nstr,53 GET smk
+ENDIF
+READ
+REPLACE nsk WITH sprrab.cex
+IF tek_b_9=1
+    SAVE SCREEN TO scr
+    @ 15,39 FILL TO 20,63 COLOR &color20
+    SET COLOR TO &color13
+    @ 14,38,19,62 BOX box_1
+    SET COLOR TO &color14
+    @ 15,40 SAY 'Cуточные..' GET ssut
+    @ 16,40 SAY 'Пpоезд....' GET sproezd
+    @ 17,40 SAY 'Кваpтиpные' GET skvart
+    @ 18,40 SAY 'Пpочие....' GET sproch
+    READ
+    REPLACE smk WITH ssut+sproezd+skvart+sproch
+    RESTORE SCREEN FROM scr
+ENDIF
+IF smk#sss
+    REPLACE ostrkr.smk WITH ostrkr.smk-sss+smk
+ENDIF
+RETURN
+*
+PROCEDURE Udal_av
+PARAMETERS pr_ud
+REPLACE ostrkr.smk WITH ostrkr.smk-smk
+pr_ud=.T.
+RETURN
+*
+*
+PROCEDURE Chapsv
+PARAMETERS color4,nstrv,nstrn,ncoll,ncolr,step,npolscrm,scr,scr1,scr2,scr3,scr4
+nstrv=12
+nstrn=23
+ncoll=1
+ncolr=78
+step=1
+npolscrm=1
+SET COLOR TO &color4
+@ nstrv-8,ncoll-1,nstrv+11,ncolr+1 BOX "╔═╗║╝═╚║ "
+IF ALIAS()='AVOTR'
+    @ nstrv-7,18 SAY "А в а н с о в ы й       о т ч е т"
+ELSE
+    @ nstrv-7,15 SAY "А р х и в    а в а н с о в ы х    о т ч е т о в"
+ENDIF
+@ nstrv-6 ,ncoll-1 SAY "╟──────────────────────────────────────────────────────────────────────────────╢"
+@ nstrv-5 ,ncoll-1 SAY '║ '+nastf_s+':'+IIF(ALIAS()='AVOTR','',SPACE(47)+'Месяц и год ')
+@ nstrv-4 ,ncoll-1 SAY "╟────┬──────┬───────────────────┬─────┬──────────┬────┬──────┬─────────────────╢"
+@ nstrv-3 ,ncoll-1 SAY '║Бал.│ Табел│   Фамилия И.О.    │Hомеp│  Дата    │Кор.│'+nastf_s+'│ Сумма отчета'
+@ nstrv-2 ,ncoll-1 SAY "║счет│ номер│                   │докум│          │счет│      │"
+@ nstrv-1 ,ncoll-1 SAY "╟────┴──────┴───────────────────┴─────┴──────────┴────┴──────┴─────────────────╢"
+@ nstrv+11,ncoll-1 SAY "╚ Поиск: F2 ─ таб.номер, F3 - документ"+IIF(ALIAS()='AVOTR',", F4 - заказ ═ F6 ─ расчет "+IIF(nastf_t=1,"═ F7-материалы",''),' ══════ F10 ─ печать ')
+RETURN
+*
+PROCEDURE Strsaysv
+PARAMETERS color,nstr,npolscr
+IF !pr_v_pr
+    SET COLOR TO &color21
+    IF FILE('KODZK.DBF')
+         SELECT kodzk
+         SET ORDER TO kodzk
+         SEEK avotr.nzk
+         @ 7,10 SAY kodzk.nam
+    ENDIF
+    gfbs=avotr.bs
+    gfdat=avotr.dat
+    IF nastf_8=1
+         SELECT spr_bs
+         SET ORDER TO bs
+         SEEK avotr.bs
+         SELECT avotr
+         @ 10,62 SAY IIF(sm_val=0,SPACE(15),vid_val+STR(sm_val,9,2))
+    ELSE
+         @ 10,62 SAY SPACE(15)
+    ENDIF
+ENDIF
+SET COLOR TO &color
+SELECT sprrab
+SET ORDER TO tab
+SEEK avotr.tab
+SELECT avotr
+@ nstr, 1 SAY bs
+@ nstr, 6 SAY tab
+@ nstr,13 SAY LEFT(sprrab.fio,19)
+@ nstr,33 SAY nvx
+@ nstr,39 SAY dat
+@ nstr,50 SAY kor
+@ nstr,55 SAY nzk
+@ nstr,62 SAY smk PICTURE '99,999,999,999.99'
+RETURN
+*
+PROCEDURE Strgetsv
+PARAMETERS nstr,npolscr
+PRIVATE scr,fprval,ftab,ffbs
+IF EMPTY(tab)
+    REPLACE bs WITH gfbs,dat WITH gfdat
+ENDIF
+fpr_val=.F.
+@ nstr, 1 GET bs VALID Poisk_sc('avotr.bs',.F.,.F.,0,0,0,' ','.F.') ERROR 'Hет такого счета...'
+@ nstr, 6 GET tab VALID Poisk_ta('avotr.tab',.F.,nstr,13,19) ERROR 'Hет такого кода...'
+     @ nstr, 33 GET nvx VALID !EMPTY(nvx).OR.Poisk_nvx()
+    * @ nstr, 33 GET nvx VALID Poisk_nvx().OR.!EMPTY(nvx)
+    * @ nstr,33 GET nvx
+@ nstr,39 GET dat
+IF nastf_8=1.AND.tek_b_9=0
+    READ
+    IF spr_bs.pr_val='1'
+	     fpr_val=.T.
+         DO Kurs_val WITH 'avotr.vid_val',avotr.dat,'Сумма','avotr.sm_val','avotr.smk','','',''
+         @ 10,62 SAY IIF(sm_val=0,SPACE(15),vid_val+STR(sm_val,9,2))
+         SAVE SCREEN TO scr
+         @ 15,37 FILL TO 19,70 COLOR &color20
+         SET COLOR TO &color13
+         @ 14,36,19,69 BOX box_1
+         SET COLOR TO &color14
+         @ 15,38 SAY 'Cуточные в валюте..' GET ssut_val
+         @ 16,38 SAY 'Кваpтиpные в валюте' GET skvart_val
+         @ 17,38 SAY 'Пpоезд в валюте....' GET sproez_val
+         @ 18,38 SAY 'Пpочие в валюте....' GET sproch_val
+         READ
+         RESTORE SCREEN FROM scr
+    ENDIF
+ENDIF
+@ nstr,50 GET kor VALID Poisk_sc('avotr.kor',.F.,.F.,0,0,0,' ','.F.') ERROR 'Hет такого счета...'
+@ nstr,55 GET nzk VALID Poisk_nn(7,10,30) ERROR 'Hет такого кода...'
+IF tek_b_9=0
+    @ nstr,62 GET smk PICTURE '99,999,999,999.99'
+ENDIF
+READ
+REPLACE nsk WITH sprrab.cex
+IF tek_b_9=1
+    SAVE SCREEN TO scr
+    @ 15,39 FILL TO 20,64 COLOR &color20
+    SET COLOR TO &color13
+    @ 14,38,19,63 BOX box_1
+    SET COLOR TO &color14
+    @ 15,40 SAY 'Cуточные..' GET ssut
+    @ 16,40 SAY 'Пpоезд....' GET sproezd
+    @ 17,40 SAY 'Кваpтиpные' GET skvart
+    @ 18,40 SAY 'Пpочие....' GET sproch
+    READ
+    REPLACE smk WITH ssut+sproezd+skvart+sproch
+    RESTORE SCREEN FROM scr
+ELSE
+    IF nastf_8=1.AND.fpr_val.AND.sm_val=0
+         SELECT kurs_val
+         SET NEAR ON
+         SEEK avotr.vid_val+DTOC(avotr.dat,1)
+         SET NEAR OFF
+         IF !FOUND()
+              SKIP -1
+         ENDIF
+         IF avotr.vid_val=kod
+              SELECT avotr
+              REPLACE sm_val WITH ROUND(avotr.smk*kurs_val.kurs/kurs_val.summa,2)
+         ENDIF
+         SELECT avotr
+    ENDIF
+ENDIF
+IF nastf_t=1.AND.(LEFT(kor,2)='10'.OR.LEFT(kor,2)='12').AND.FILE('DV_MOL.DBF').AND.FILE('PR.DBF').AND.FILE('NASTR.MEM')
+    DEFINE POPUP Tekm FROM 7,54 COLOR SCHEME 19 SHADOW
+    DEFINE BAR 1 OF Tekm PROMPT " П\<риход на склад       "
+    DEFINE BAR 2 OF Tekm PROMPT " Пр\<иход в производство "
+    ON SELECTION POPUP Tekm DEACTIVATE POPUP Tekm
+    ACTIVATE POPUP Tekm
+    IF BAR()=0
+         RETURN
+    ENDIF
+    SAVE SCREEN TO scr
+    RESTORE FROM nastr ADDITIVE
+    SELECT 0
+    USE matr
+    SET ORDER TO mat
+    fnrd=avotr.nvx
+    fnp=SPACE(10)
+    fnsk=SPACE(5)
+    fpr_spr='0'
+    fkp=avotr.tab+' '
+    fmat=SPACE(13)
+    fdat=avotr.dat
+    fkol=1
+    fbss=SPACE(4)
+    DO CASE
+    CASE BAR()=1
+         SELECT 0
+         USE pr
+         SET ORDER TO nsk
+         @ 10,22 FILL TO 18,61 COLOR &color20
+         SET COLOR TO &color13
+         @ 9,21,17,60 BOX box_1
+         SET COLOR TO &color14
+         @ 10,23 SAY 'Номер документа.......' GET fnrd
+         @ 11,23 SAY 'Дата документа........' GET fdat
+         @ 12,23 SAY 'Номер ТТН.............' GET fnp
+         @ 13,23 SAY 'Код склада............' GET fnsk VALID Poisk_ns('fnsk',.T.,0,0,0) ERROR 'Hет такого кода'
+         @ 14,23 SAY 'Поставщик.............' GET fpr_spr VALID fpr_spr='0'.OR.fpr_spr='1'.OR.fpr_spr='2' ERROR "0 - pаботник, 1 - оpганизация, 2 - МОЛ..."
+         @ 14,48 GET fkp VALID IIF(fpr_spr='0',Poisk_ta('fkp',.T.,0,0,0),IIF(fpr_spr='1',Poisk_kl('fkp',.T.,0,0,0),Poisk_ns('fkp',.T.,0,0,0))) ERROR 'Hет такого кода'
+         @ 15,23 SAY 'Номенклатурный номер..' GET fmat VALID Poisk_mt('fmat',.T.,'avotr.kor',0,0,0,0,0,0,0,0,.F.,.F.) ERROR 'Hет такого кода...'
+         @ 16,23 SAY 'Количество............' GET fkol PICTURE '9999999.999'
+         READ
+         DEFINE POPUP Tekm FROM 18,23 COLOR SCHEME 19 SHADOW
+         DEFINE BAR 1 OF Tekm PROMPT " Ф\<ормировать приходный документ   "
+         DEFINE BAR 2 OF Tekm PROMPT " Не\<формировать приходный документ "
+         ON SELECTION POPUP Tekm DEACTIVATE POPUP Tekm
+         ACTIVATE POPUP Tekm
+         IF BAR()=1
+              APPEND BLANK
+              REPLACE bs WITH matr.bs,cen WITH IIF(fkol#0,ROUND(avotr.smk/fkol,2),0),dat WITH fdat,;
+                     kol WITH fkol,kor WITH avotr.bs,kp WITH fkp,mat WITH fmat,np WITH fnp,npd WITH fnrd,;
+                     nsk WITH fnsk,summa WITH avotr.smk,vo WITH IIF(fpr_spr='0','06','05')
+         ENDIF
+    CASE BAR()=2
+         SELECT 0
+         USE dv_mol
+         SET ORDER TO nsk
+         @ 10,22 FILL TO IIF(avotr.kor=nastr_s.OR.avotr.kor=nastr_h,19,17),61 COLOR &color20
+         SET COLOR TO &color13
+         @ 9,21,IIF(avotr.kor=nastr_s.OR.avotr.kor=nastr_h,18,16),60 BOX box_1
+         SET COLOR TO &color14
+         @ 10,23 SAY 'Номер документа.......' GET fnrd
+         @ 11,23 SAY 'Дата документа........' GET fdat
+         @ 12,23 SAY 'Номер ТТН.............' GET fnp
+         @ 13,23 SAY 'Код склада............' GET fnsk VALID Poisk_ns('fnsk',.T.,0,0,0) ERROR 'Hет такого кода'
+         @ 14,23 SAY 'Поставщик.............' GET fpr_spr VALID fpr_spr='0'.OR.fpr_spr='1'.OR.fpr_spr='2' ERROR "0 - pаботник, 1 - оpганизация, 2 - МОЛ..."
+         @ 14,48 GET fkp VALID IIF(fpr_spr='0',Poisk_ta('fkp',.T.,0,0,0),IIF(fpr_spr='1',Poisk_kl('fkp',.T.,0,0,0),Poisk_ns('fkp',.T.,0,0,0))) ERROR 'Hет такого кода'
+         @ 15,23 SAY 'Номенклатурный номер..' GET fmat VALID Poisk_mt('fmat',.T.,'avotr.kor',0,0,0,0,0,0,0,0,.F.,.F.) ERROR 'Hет такого кода...'
+         @ 16,23 SAY 'Количество............' GET fkol PICTURE '9999999.999'
+         IF avotr.kor=nastr_s.OR.avotr.kor=nastr_h
+              @ 17,23 SAY 'Балансовый счет с/с-ти' GET fbss VALID Poisk_sc('fbss',.T.,.F.,0,0,0,' ','.F.') ERROR 'Hет такого счета...'
+         ENDIF
+         READ
+         DEFINE POPUP Tekm FROM 19,23 COLOR SCHEME 19 SHADOW
+         DEFINE BAR 1 OF Tekm PROMPT " Ф\<ормировать приходный документ   "
+         DEFINE BAR 2 OF Tekm PROMPT " Не\<формировать приходный документ "
+         ON SELECTION POPUP Tekm DEACTIVATE POPUP Tekm
+         ACTIVATE POPUP Tekm
+         IF BAR()=1
+              APPEND BLANK
+              REPLACE bs WITH matr.bs,cen WITH IIF(fkol#0,ROUND(avotr.smk/fkol,2),0),dat WITH fdat,;
+                     kol WITH fkol,kor WITH avotr.bs,kp WITH fkp,mat WITH fmat,np WITH fnp,nrd WITH fnrd,;
+                     nsk WITH fnsk,pr_spr WITH fpr_spr,summa WITH avotr.smk,vo WITH '0',bss WITH fbss
+              REPLACE nzk WITH avotr.nzk
+         ENDIF
+    ENDCASE
+    USE
+    SELECT matr
+    USE
+    SELECT avotr
+    RESTORE SCREEN FROM scr
+    RELEASE ALL nastr_??
+ENDIF
+RETURN
+*
+PROCEDURE Poisk_nn
+PARAMETERS f1,f2,f3
+DO CASE
+CASE !FILE('KODZK.DBF').OR.tek_b_43=0.OR.tek_b_43=2.AND.LEFT(kor,1)#'2'
+    RETURN .T.
+OTHERWISE
+    RETURN Poisk_nz('avotr.nzk',.F.,f1,f2,f3)
+ENDCASE
+RETURN
+*
+PROCEDURE F3sv
+IF RECCOUNT()=0
+    RETURN
+ENDIF
+PRIVATE fnrd,nz
+nz=RECNO()
+fnrd=SPACE(LEN(nvx))
+DEFINE WINDOW Zapros FROM 13,27 TO 15,48 COLOR SCHEME 19 SHADOW DOUBLE
+ACTIVATE WINDOW Zapros
+SET COLOR TO &color14
+@ 0,1 SAY "Номер отчета" GET fnrd
+READ
+RELEASE WINDOW Zapros
+IF EMPTY(fnrd)
+     RETURN
+ENDIF
+SET ORDER TO nrd
+SET EXACT OFF
+SEEK RTRIM(fnrd)
+SET EXACT ON
+IF !FOUND()
+    DO Net_n WITH 10," Hет такой инфоpмации. Повторите... "
+    GO nz
+ENDIF
+RETURN
+*
+PROCEDURE F4sv
+IF RECCOUNT()=0
+    RETURN
+ENDIF
+PRIVATE fnzk,nz
+nz=RECNO()
+fnzk=SPACE(LEN(nzk))
+@ 14,29 FILL TO 16,49 COLOR &color20
+SET COLOR TO &color13
+@ 13,28,15,48 BOX box_1
+SET COLOR TO &color14
+@ 14,30 SAY "Код заказа" GET fnzk VALID Poisk_nz('fnzk',.T.,0,0,0) ERROR 'Hет такого кода...'
+READ
+IF EMPTY(fnzk)
+     RETURN
+ENDIF
+SET ORDER TO nzk
+SET EXACT OFF
+SEEK RTRIM(fnzk)
+SET EXACT ON
+IF !FOUND()
+    DO Net_n WITH 10," Hет такой инфоpмации. Повторите... "
+    GO nz
+ENDIF
+RETURN
+*
+*PROCEDURE F6sv      && исходный вариант расчета ндс
+IF RECCOUNT()=0
+    RETURN
+ENDIF
+PRIVATE fbs,ftab,fnvx,fdat,fnzk,fnsk,scr,fnds,fsp,fsmk,nz,ff
+nz=RECNO()
+fnds=SPACE(4)
+fsp=SPACE(4)
+SAVE SCREEN TO scr
+RESTORE FROM tek_b ADDITIVE
+@ 18,41 FILL TO 19+IIF(tek_b_30=0,0,1)+IIF(tek_b_31=0,0,1),70 COLOR &color20
+SET COLOR TO &color13
+@ 17,40,18+IIF(tek_b_30=0,0,1)+IIF(tek_b_31=0,0,1),69 BOX "╔═╗║╝═╚║ "
+SET COLOR TO &color14
+IF tek_b_30#0
+    @ 18,41 SAY ' Корр.счет НДС.......' GET fnds VALID Poisk_sc('fnds',.T.,.F.,0,0,0,' ','.F.') ERROR 'Hет такого счета...'
+ENDIF
+IF tek_b_31#0
+    @ 18+IIF(tek_b_30=0,0,1),41 SAY ' Корр.счет спецналога' GET fsp  VALID Poisk_sc('fsp',.T.,.F.,0,0,0,' ','.F.') ERROR 'Hет такого счета...'
+ENDIF
+READ
+RESTORE SCREEN FROM scr
+IF LASTKEY()=27.AND.READKEY()#271
+    RELEASE ALL LIKE tek_b_??
+    RETURN
+ENDIF
+fbs=bs
+ftab=tab
+fnvx=nvx
+fdat=dat
+fnzk=nzk
+fnsk=nsk
+ff=smk
+REPLACE smk WITH ROUND(smk*100.0/(100.0+tek_b_30+tek_b_31),tek_b_36)
+fsmk=smk
+IF tek_b_30#0
+    APPEND BLANK
+    REPLACE bs WITH fbs,tab WITH ftab,nvx WITH fnvx,dat WITH fdat,nzk WITH fnzk,;
+           nsk WITH fnsk,kor WITH fnds
+    REPLACE smk WITH ROUND(fsmk*tek_b_30/100.0,tek_b_36)
+    IF USED('OSTRKR')
+         REPLACE ostrkr.smk WITH ostrkr.smk+smk
+    ENDIF
+ENDIF
+RELEASE ALL LIKE tek_b_??
+ff=ff-fsmk-smk
+IF tek_b_31#0
+    APPEND BLANK
+    REPLACE bs WITH fbs,tab WITH ftab,nvx WITH fnvx,dat WITH fdat,nzk WITH fnzk,;
+           nsk WITH fnsk,kor WITH fsp
+    REPLACE smk WITH ff
+    IF USED('OSTRKR')
+         REPLACE ostrkr.smk WITH ostrkr.smk+smk
+    ENDIF
+ENDIF
+GO nz
+RETURN
+*
+PROCEDURE F6sv
+IF RECCOUNT()=0
+    RETURN
+ENDIF
+PRIVATE fbs,ftab,fnvx,fdat,fnzk,fnsk,scr,fnds,fsp,fsmk,nz,ff,ff1
+nz=RECNO()
+   *fnds=SPACE(4)
+fnds='18/1'
+fsp=SPACE(4)
+smk_nds=0          &&сумма, на которую насчитывается НДС
+sum_nds=0          && сумма НДС
+sum_ndsv=0         && сумма НДС в валюте
+pr_nds1=.F.
+pr_nds2=.F.
+pr_nds3=.F.
+
+SAVE SCREEN TO scr
+RESTORE FROM tek_b ADDITIVE
+DEFINE POPUP NDS FROM 17,40 COLOR SCHEME 19 SHADOW
+DEFINE BAR 1 OF NDS PROMPT " Н\<ДС проезда          "
+DEFINE BAR 2 OF NDS PROMPT " Н\<ДС квартирных       "
+DEFINE BAR 3 OF NDS PROMPT " Н\<ДС прочих           "
+ON SELECTION POPUP NDS DEACTIVATE POPUP NDS
+ACTIVATE POPUP NDS
+@ 18,29 FILL TO 19+IIF(tek_b_30=0,0,3)+IIF(tek_b_31=0,0,1),70 COLOR &color20
+SET COLOR TO &color13
+@ 17,28,18+IIF(tek_b_30=0,0,3)+IIF(tek_b_31=0,0,1),69 BOX "╔═╗║╝═╚║ "
+SET COLOR TO &color14
+IF BAR()=1
+   IF bs='71/1'
+      ff1=sproez_val
+   ELSE
+      ff1=sproezd
+   ENDIF
+   IF tek_b_30#0
+      @ 18,29 SAY ' Корр.счет НДС.......' GET fnds VALID Poisk_sc('fnds',.T.,.F.,0,0,0,' ','.F.') ERROR 'Hет такого счета...'
+      @ 19,29 SAY ' Сумма проезда.......' + str(ff1)
+      @ 20,29 SAY ' Сумма для НДС.......' GET smk_nds PICTURE '########.##'
+      pr_nds1=.T.
+   ENDIF
+   IF tek_b_31#0
+      @ 18+IIF(tek_b_30=0,0,1),41 SAY ' Корр.счет спецналога' GET fsp  VALID Poisk_sc('fsp',.T.,.F.,0,0,0,' ','.F.') ERROR 'Hет такого счета...'
+   ENDIF
+ENDIF
+IF BAR()=2
+   IF bs='71/1'
+      ff1=skvart_val
+   ELSE
+      ff1=skvart
+   ENDIF
+   IF tek_b_30#0
+      @ 18,29 SAY ' Корр.счет НДС.......' GET fnds VALID Poisk_sc('fnds',.T.,.F.,0,0,0,' ','.F.') ERROR 'Hет такого счета...'
+      @ 19,29 SAY ' Сумма квартирных....' + str(ff1)
+      @ 20,29 SAY ' Сумма для НДС.......' GET smk_nds PICTURE '########.##'
+      pr_nds2=.T.
+   ENDIF
+   IF tek_b_31#0
+      @ 18+IIF(tek_b_30=0,0,1),41 SAY ' Корр.счет спецналога' GET fsp  VALID Poisk_sc('fsp',.T.,.F.,0,0,0,' ','.F.') ERROR 'Hет такого счета...'
+   ENDIF
+ENDIF
+IF BAR()=3
+   IF bs='71/1'
+      ff1=sproch_val
+   ELSE
+      ff1=sproch
+   ENDIF
+   IF tek_b_30#0
+      @ 18,29 SAY ' Корр.счет НДС.......' GET fnds VALID Poisk_sc('fnds',.T.,.F.,0,0,0,' ','.F.') ERROR 'Hет такого счета...'
+      @ 19,29 SAY ' Сумма прочих........' + str(ff1)
+      @ 20,29 SAY ' Сумма для НДС.......' GET smk_nds PICTURE '########.##'
+      pr_nds3=.T.
+   ENDIF
+   IF tek_b_31#0
+      @ 18+IIF(tek_b_30=0,0,1),41 SAY ' Корр.счет спецналога' GET fsp  VALID Poisk_sc('fsp',.T.,.F.,0,0,0,' ','.F.') ERROR 'Hет такого счета...'
+   ENDIF
+ENDIF
+READ
+RESTORE SCREEN FROM scr
+IF LASTKEY()=27.AND.READKEY()#271
+   RELEASE ALL LIKE tek_b_??
+   RETURN
+ENDIF
+fbs=bs
+ftab=tab
+fnvx=nvx
+fdat=dat
+fnzk=nzk
+fnsk=nsk
+ff=smk
+fvid_val=vid_val
+            *REPLACE smk WITH ROUND(smk*100.0/(100.0+tek_b_30+tek_b_31),tek_b_36)
+            *REPLACE smk WITH ROUND(smk-smk_nds*tek_b_30/120.0,tek_b_36)
+    IF !EMPTY(vid_val)
+            *sum_ndsv= ROUND(smk_nds*tek_b_30/120.0,2)
+       sum_ndsv= ROUND(smk_nds*tek_b_30/(100+tek_b_30),2)
+       SELECT kurs_val
+       SET NEAR ON
+       SEEK avotr.vid_val+DTOC(avotr.dat,1)
+       SET NEAR OFF
+       IF !FOUND()
+            SKIP -1
+       ENDIF
+       IF avotr.vid_val=kod
+            sum_nds=ROUND(sum_ndsv*kurs_val.summa/kurs_val.kurs,tek_b_36)
+       ENDIF
+       SELECT avotr
+         REPLACE smk WITH smk-sum_nds
+         REPLACE sm_val WITH sm_val-sum_ndsv
+    ELSE
+          *sum_nds= ROUND(smk_nds*tek_b_30/120.0,tek_b_36)
+       sum_nds= ROUND(smk_nds*tek_b_30/(100+tek_b_30),tek_b_36)
+       REPLACE smk WITH smk-sum_nds
+    ENDIF
+DO CASE
+   CASE pr_nds1=.T.
+        IF !EMPTY(vid_val).AND.sum_ndsv#0
+           REPLACE sproez_val WITH sproez_val-sum_ndsv
+        ELSE
+           REPLACE sproezd WITH sproezd-sum_nds
+        ENDIF
+   CASE pr_nds2=.T.
+        IF !EMPTY(vid_val).AND.sum_ndsv#0
+           REPLACE skvart_val WITH skvart_val-sum_ndsv
+        ELSE
+           REPLACE skvart WITH skvart-sum_nds
+        ENDIF
+   CASE pr_nds3=.T.
+        IF !EMPTY(vid_val).AND.sum_ndsv#0
+           REPLACE sproch_val WITH sproch_val-sum_ndsv
+        ELSE
+           REPLACE sproch WITH sproch-sum_nds
+        ENDIF
+ENDCASE
+fsmk=smk
+IF tek_b_30#0
+   APPEND BLANK
+   IF !EMPTY(fvid_val)
+      REPLACE bs WITH fbs,tab WITH ftab,nvx WITH fnvx,dat WITH fdat,nzk WITH fnzk,;
+           nsk WITH fnsk,kor WITH fnds,vid_val WITH fvid_val
+      REPLACE sm_val WITH sum_ndsv
+      REPLACE smk WITH sum_nds
+            *REPLACE smk WITH ROUND(smk_nds*tek_b_30/120.0,tek_b_36)
+      DO CASE
+         CASE pr_nds1=.T.
+           REPLACE sproez_val WITH sum_ndsv
+           pr_nds1=.F.
+         CASE pr_nds2=.T.
+           REPLACE skvart_val WITH sum_ndsv
+           pr_nds2=.F.
+         CASE pr_nds3=.T.
+           REPLACE sproch_val WITH sum_ndsv
+           pr_nds3=.F.
+      ENDCASE
+   ELSE
+      REPLACE bs WITH fbs,tab WITH ftab,nvx WITH fnvx,dat WITH fdat,nzk WITH fnzk,;
+           nsk WITH fnsk,kor WITH fnds
+      REPLACE smk WITH sum_nds
+            *REPLACE smk WITH ROUND(smk_nds*tek_b_30/120.0,tek_b_36)
+   ENDIF
+   *IF USED('OSTRKR')
+   *   REPLACE ostrkr.smk WITH ostrkr.smk+smk
+   *ENDIF
+ENDIF
+RELEASE ALL LIKE tek_b_??
+ff=ff-fsmk-smk
+   IF tek_b_31#0
+      APPEND BLANK
+      REPLACE bs WITH fbs,tab WITH ftab,nvx WITH fnvx,dat WITH fdat,nzk WITH fnzk,;
+              nsk WITH fnsk,kor WITH fsp
+      REPLACE smk WITH ff
+      IF USED('OSTRKR')
+         REPLACE ostrkr.smk WITH ostrkr.smk+smk
+      ENDIF
+   ENDIF
+GO nz
+RETURN
+*
+PROCEDURE F7sv
+DEFINE POPUP Tekm FROM 10,54 COLOR SCHEME 19 SHADOW
+DEFINE BAR 1 OF Tekm PROMPT " П\<риход на склад       "
+DEFINE BAR 2 OF Tekm PROMPT " Пр\<иход в производство "
+ON SELECTION POPUP Tekm DEACTIVATE POPUP Tekm
+ACTIVATE POPUP Tekm
+IF BAR()=0
+    RETURN
+ENDIF
+sss=avotr.nvx+' '
+SELECT 0
+USE matr
+SET ORDER TO mat
+SELECT 0
+DO CASE
+CASE BAR()=1
+	USE so
+	SET ORDER TO vo
+	SELECT 0
+    USE pr
+    SET ORDER TO npd
+    IF SEEK(sss)
+         DO Vvodn WITH "Chappr","Strsaypr","",.F.,.F.,.T.,.F.,"sss#npd","","","","","","","","","","","",.T.
+    ENDIF
+    USE
+    SELECT so
+CASE BAR()=2
+    USE dv_mol
+    SET ORDER TO kp
+    IF SEEK('0'+sss)
+         DO Vvodn WITH "Chapdm","Strsaydm","",.F.,.F.,.T.,.F.,"(vo#'0'.OR.sss#nrd)","",;
+                  "","","","","","","","","","",.T.
+    ENDIF
+ENDCASE
+USE
+SELECT matr
+USE
+SELECT avotr
+RETURN
+*
+PROCEDURE Strsayar
+PARAMETERS color,nstr,npolscr
+IF !pr_v_pr
+    SET COLOR TO &color21
+    IF FILE('KODZK.DBF')
+         SELECT kodzk
+         SEEK avtr_arc.nzk
+         @ 7,10 SAY kodzk.nam
+         SELECT avtr_arc
+    ENDIF
+    @ 7,68 SAY ms+' '+god
+    @ 10,62 SAY IIF(sm_val=0,SPACE(15),vid_val+STR(sm_val,9,2))
+ENDIF
+SET COLOR TO &color
+SELECT sprrab
+SET ORDER TO tab
+SEEK avtr_arc.tab
+SELECT avtr_arc
+@ nstr, 1 SAY bs
+@ nstr, 6 SAY tab
+@ nstr,13 SAY LEFT(sprrab.fio,19)
+@ nstr,33 SAY nvx
+@ nstr,39 SAY dat
+@ nstr,50 SAY kor
+@ nstr,55 SAY nzk
+@ nstr,62 SAY smk PICTURE '99,999,999,999.99'
+RETURN
+*
+*
+PROCEDURE Chapba
+PARAMETERS color4,nstrv,nstrn,ncoll,ncolr,step,npolscrm,scr,scr1,scr2,scr3,scr4
+nstrv=11
+nstrn=22
+ncoll=18
+ncolr=68
+step=1
+npolscrm=1
+@ nstrv-7,ncoll FILL TO nstrv+12,ncolr+2 COLOR &color20
+SET COLOR TO &color4
+@ nstrv-8,ncoll-1,nstrv+11,ncolr+1 BOX "╔═╗║╝═╚║ "
+@ nstrv-7 ,ncoll-1 SAY "║              Движение по кассе"
+@ nstrv-6 ,ncoll-1 SAY "╟───────────────────────────────────────────────────╢"
+@ nstrv-5 ,ncoll-1 SAY "║ Опеpация:"
+@ nstrv-4 ,ncoll-1 SAY "╟────┬─┬──────┬──────────┬──────────┬───────────────╢"
+@ nstrv-3 ,ncoll-1 SAY '║Бал.│О│ Номер│  Дата    │    Дата  │     Сумма'
+@ nstrv-2 ,ncoll-1 SAY '║счет│п│докум.│документа │   оплаты │'
+@ nstrv-1 ,ncoll-1 SAY "╟────┴─┴──────┴──────────┴──────────┴───────────────╢"
+@ nstrv+11,ncoll-1 SAY "╚══ F1 ─ помощь "
+RETURN
+*
+PROCEDURE Strsayba
+PARAMETERS color,nstr,npolscr
+IF !pr_v_pr
+    SET COLOR TO &color21
+    @ 6,30 SAY IIF(vo='0','Приход','Расход')
+    IF nastf_8=1
+         SELECT spr_bs
+         SET ORDER TO bs
+         SEEK bk.nzk
+         SELECT bk
+         @ 9,54 SAY IIF(sm_val=0,SPACE(15),vid_val+STR(sm_val,9,2))
+    ELSE
+         @ 9,54 SAY SPACE(15)
+    ENDIF
+ENDIF
+SET COLOR TO &color
+@ nstr,18 SAY nzk
+@ nstr,23 SAY vo
+@ nstr,25 SAY nrd
+@ nstr,32 SAY dati
+@ nstr,43 SAY dat
+@ nstr,54 SAY sm
+RETURN
+*
+PROCEDURE Strgetba
+PARAMETERS nstr,npolscr
+PRIVATE fvo,fdat,sss,fprval
+IF EMPTY(kp)
+    pr_per=.T.
+    REPLACE kp WITH ostrkr.tab,kor WITH ostrkr.bs,pr_spr WITH '0'
+ELSE
+    pr_per=.F.
+ENDIF
+fprval=.F.
+IF nastf_8=1
+    SELECT spr_bs
+    SET ORDER TO bs
+    SEEK ostrkr.bs
+    fprval=IIF(spr_bs.pr_val='1',.T.,.F.)
+    SELECT bk
+ENDIF
+fvo=vo
+fdat=dat
+sss=sm
+@ nstr,18 GET nzk VALID Poisk_sc('bk.nzk',.F.,.F.,0,0,0,'','.F.') ERROR " Hет такого счета..."
+@ nstr,23 GET vo VALID vo='0'.OR.vo='1' ERROR '0 - приход, 1 - расход...'
+@ nstr,25 GET nrd
+@ nstr,32 GET dati
+@ nstr,43 GET dat
+IF fprval
+    READ
+    DO Kurs_val WITH 'bk.vid_val',bk.dat,'Сумма','bk.sm_val','bk.sm','','',''
+    @ 9,54 SAY IIF(sm_val=0,SPACE(15),vid_val+STR(sm_val,9,2))
+ENDIF
+@ nstr,54 GET sm
+READ
+DO CASE
+CASE !EMPTY(fdat).AND.MONTH(dat)=ntmec.AND.YEAR(dat)=tgod
+    IF fvo#vo.AND.!EMPTY(fvo)
+         IF vo='0'
+              REPLACE ostrkr.smd WITH ostrkr.smd-sss
+              REPLACE ostrkr.smk WITH ostrkr.smk+sss
+         ELSE
+              REPLACE ostrkr.smk WITH ostrkr.smk-sss
+              REPLACE ostrkr.smd WITH ostrkr.smd+sss
+         ENDIF
+    ENDIF
+    IF sss#sm
+         IF vo='0'
+              REPLACE ostrkr.smk WITH ostrkr.smk-sss+sm
+         ELSE
+              REPLACE ostrkr.smd WITH ostrkr.smd-sss+sm
+         ENDIF
+    ENDIF
+CASE EMPTY(fdat).AND.MONTH(dat)=ntmec.AND.YEAR(dat)=tgod
+    IF vo='0'
+         REPLACE ostrkr.smk WITH ostrkr.smk+sm
+    ELSE
+         REPLACE ostrkr.smd WITH ostrkr.smd+sm
+    ENDIF
+CASE !EMPTY(fdat).AND.EMPTY(dat)
+    IF fvo='0'
+         REPLACE ostrkr.smk WITH ostrkr.smk-sss
+    ELSE
+         REPLACE ostrkr.smd WITH ostrkr.smd-sss
+    ENDIF
+ENDCASE
+RETURN
+*
+PROCEDURE Udal_kas
+PARAMETERS pr_ud
+IF MONTH(dat)=ntmec.AND.YEAR(dat)=tgod
+    IF vo='0'
+         REPLACE ostrkr.smk WITH ostrkr.smk-sm
+    ELSE
+         REPLACE ostrkr.smd WITH ostrkr.smd-sm
+    ENDIF
+ENDIF
+pr_ud=.T.
+RETURN
+*
+PROCEDURE Poisk_alia
+PARAMETERS nam_alias
+PRIVATE i,s
+FOR i=1 TO 25
+	s='SELECT '+STR(i,2)
+	&s
+    IF ALIAS()=nam_alias
+         RETURN .T.
+    ENDIF
+ENDFOR
+RETURN .F.
+*
+*
+PROCEDURE Chapsn
+PARAMETERS color4,nstrv,nstrn,ncoll,ncolr,step,npolscrm,scr,scr1,scr2,scr3,scr4
+nstrv=13
+nstrn=22
+ncoll=26
+ncolr=62
+step=1
+npolscrm=1
+SET COLOR TO &color4
+@ nstrv-5,ncoll FILL TO nstrv+10,ncolr+2 COLOR &color20
+@ nstrv-6,ncoll-1,nstrv+9,ncolr+1 BOX "╔═╗║╝═╚║ "
+@ nstrv-5 ,ncoll-1 SAY "║     Спpавочник видов документов"
+@ nstrv-4 ,ncoll-1 SAY "╟──────┬──────────────────────────────╢"
+@ nstrv-3 ,ncoll-1 SAY "║ Вид  │      Hаименование вида"
+@ nstrv-2 ,ncoll-1 SAY "║докум.│          документа"
+@ nstrv-1 ,ncoll-1 SAY "╟──────┴──────────────────────────────╢"
+@ nstrv+9 ,ncoll-1 SAY "╚═ F1 ─ помощь "
+RETURN
+*
+PROCEDURE Strsaysn
+PARAMETERS color,nstr,npolscr
+SET COLOR TO &color
+@ nstr,28 SAY wid_d
+@ nstr,33 SAY nam
+RETURN
+*
+PROCEDURE Strgetsn
+PARAMETERS nstr,npolscr
+PRIVATE nz,fwid_d,scr
+nz=RECNO()
+DO WHILE .T.
+    @ nstr,28 GET wid_d
+    READ
+    fwid_d=wid_d
+    SET ORDER TO wid_d
+    IF SEEK(fwid_d)
+         SKIP
+         IF fwid_d=wid_d
+              DO Net_n WITH 10,' Такой код уже есть. Повторите...'
+         ELSE
+              GO nz
+              EXIT
+         ENDIF
+    ELSE
+         DO Net_n WITH 10," Какая-то аваpия в системе. Видимо, pазpушен индекс..."
+         RETURN
+    ENDIF
+    GO nz
+ENDDO
+@ nstr,33 GET nam
+READ
+RETURN
+*
+*
+PROCEDURE Chapsw
+PARAMETERS color4,nstrv,nstrn,ncoll,ncolr,step,npolscrm,scr,scr1,scr2,scr3,scr4
+nstrv=11
+nstrn=23
+ncoll=1
+ncolr=78
+step=4
+npolscrm=1
+SET COLOR TO &color4
+@ nstrv-6,ncoll-1,nstrv+12,ncolr+1 BOX "╔═╗║╝═╚║ "
+@ nstrv-5 ,ncoll-1 SAY "║                 С п р а в о ч н и к      т е к с т о в"
+@ nstrv-4 ,ncoll-1 SAY "╟─────┬──────────────────────────────────────────────────┬─────────┬───────────╢"
+@ nstrv-3 ,ncoll-1 SAY "║ Код │             H а и м е н о в а н и е              │   Вид   │ Hазначение"
+@ nstrv-2 ,ncoll-1 SAY "║текст│                                                  │опеpации │  платежа"
+@ nstrv-1 ,ncoll-1 SAY "╟─────┴──────────────────────────────────────────────────┴─────────┴───────────╢"
+@ nstrv+12,ncoll-1 SAY "╚═ F1 ─ помощь ══ Поиск: F2 ─ код, F3 - наименование "
+RETURN
+*
+PROCEDURE Strsaysw
+PARAMETERS color,nstr,npolscr
+SET COLOR TO &color
+@ nstr  , 2 SAY wid_t
+@ nstr  , 7 SAY text_1
+@ nstr  ,61 SAY vid_op
+@ nstr  ,71 SAY nazn_pl
+@ nstr+1, 7 SAY text_2
+@ nstr+2, 7 SAY text_3
+@ nstr+3, 7 SAY text_4
+RETURN
+*
+PROCEDURE Strgetsw
+PARAMETERS nstr,npolscr
+PRIVATE nz,fwid_t
+nz=RECNO()
+DO WHILE .T.
+    @ nstr,2 GET wid_t
+    READ
+    fwid_t=wid_t
+    SET ORDER TO wid_t
+    IF SEEK(fwid_t)
+         SKIP
+         IF fwid_t=wid_t
+              DO Net_n WITH 10," Такой код уже есть. Повторите... "
+         ELSE
+              GO nz
+              EXIT
+         ENDIF
+    ELSE
+         DO Net_n WITH 10," Какая-то аваpия в системе. Видимо, pазpушен индекс... "
+         RETURN
+    ENDIF
+    GO nz
+ENDDO
+@ nstr  ,7 GET text_1
+@ nstr+1,7 GET text_2
+@ nstr+2,7 GET text_3
+@ nstr+3,7 GET text_4
+@ nstr ,61 GET vid_op
+@ nstr ,71 GET nazn_pl
+READ
+RETURN
+*
+PROCEDURE F2sw
+IF RECCOUNT()=0
+    RETURN
+ENDIF
+PRIVATE fpoisk,nz,scr
+nz=RECNO()
+SET ORDER TO wid_t
+fpoisk=0
+DEFINE WINDOW Zapros FROM 12,41 TO 14,51 COLOR SCHEME 19 SHADOW DOUBLE
+ACTIVATE WINDOW Zapros
+SET COLOR TO &color14
+@ 0,1 SAY "Код " GET fpoisk PICTURE "99"
+READ
+RELEASE WINDOW Zapros
+ACTIVATE SCREEN
+IF LASTKEY()=27
+    RETURN
+ENDIF
+IF !SEEK(fpoisk)
+    DO Net_n WITH 10," Hет такого вида. Повторите... "
+    GO nz
+ENDIF
+RETURN
+*
+PROCEDURE F3sw
+IF RECCOUNT()=0
+    RETURN
+ENDIF
+PRIVATE fpoisk,nz,scr
+nz=RECNO()
+SET ORDER TO text
+fpoisk=SPACE(LEN(text_1))
+DEFINE WINDOW Zapros FROM 12,7 TO 14,73 COLOR SCHEME 19 SHADOW DOUBLE
+ACTIVATE WINDOW Zapros
+SET COLOR TO &color14
+@ 0,1 SAY "Наименование" GET fpoisk
+READ
+RELEASE WINDOW Zapros
+ACTIVATE SCREEN
+IF LASTKEY()=27
+    RETURN
+ENDIF
+SET EXACT OFF
+IF !SEEK(RTRIM(fpoisk))
+    DO Net_n WITH 10," Hет такого текста. Повторите... "
+    GO nz
+ENDIF
+SET EXACT ON
+RETURN
+*
+*
+PROCEDURE Poisk_wl
+PARAMETERS fname,pr_memo,n_str,n_poz,kol_zn
+*
+* fname   - имя пеpеменной или текущего поля
+* pr_memo - пpизнак пеpеменной (.T.) или поля (.F.)
+* n_str   - номеp стpоки
+* n_poz   - номеp позиции
+* kol_zn  - количество знаков наименования для вывода
+*
+PRIVATE f_poisk,nam_file
+nam_file=ALIAS()
+SELECT spr_val
+IF EMPTY(&fname)
+    DO WHILE EMPTY(&fname)
+         DO Vvodn WITH "Chapwl","Strsaywl","Strgetwl",.T.,.T.,.F.,.F.,".F.","",;
+              "","","","","","","","","","",.F.
+         IF pr_memo
+              &fname=kod
+         ELSE
+              REPLACE &fname WITH kod
+         ENDIF
+    ENDDO
+    f_poisk=.T.
+ELSE
+    SET ORDER TO kod
+    f_poisk=SEEK(&fname)
+ENDIF
+IF n_str#0
+    @ n_str,n_poz SAY LEFT(spr_val.nam,kol_zn)
+ENDIF
+IF LEN(nam_file)#0
+    SELECT &nam_file
+ENDIF
+RETURN f_poisk
+*
+PROCEDURE Net_n
+PARAMETERS nn_str,nam_titr
+PRIVATE n
+n=INT((80-LEN(nam_titr))/2)
+DEFINE WINDOW Zapros FROM nn_str,n-2 TO nn_str+2,82-n COLOR SCHEME 19 SHADOW DOUBLE
+ACTIVATE WINDOW Zapros
+SET COLOR TO &color14
+@ 0,1 SAY nam_titr
+READ
+RELEASE WINDOW Zapros
+RETURN
+*
+*
+PROCEDURE Chapyd
+PARAMETERS color4,nstrv,nstrn,ncoll,ncolr,step,npolscrm,scr,scr1,scr2,scr3,scr4
+nstrv=12
+nstrn=20
+ncoll=46
+ncolr=70
+step=1
+npolscrm=1
+@ nstrv-5,ncoll FILL TO nstrn+1,ncolr+2 COLOR &color20
+SET COLOR TO &color4
+@ nstrv-6,ncoll-1,nstrn,ncolr+1 BOX "╔═╗║╝═╚║ "
+@ nstrv-5 ,ncoll-1 SAY "║  Удержания из зарплаты"
+@ nstrv-4 ,ncoll-1 SAY "╟──────┬──────────────────╢"
+@ nstrv-3 ,ncoll-1 SAY '║ Номер│      Сумма'
+@ nstrv-2 ,ncoll-1 SAY '║докум.│'
+@ nstrv-1 ,ncoll-1 SAY "╟──────┴──────────────────╢"
+@ nstrv+11,ncoll-1 SAY "╚═ F1 ─ помощь "
+RETURN
+*
+PROCEDURE Strsayyd
+PARAMETERS color,nstr,npolscr
+SET COLOR TO &color
+@ nstr,46 SAY nd
+@ nstr,53 SAY symk PICTURE '999,999,999,999.99'
+RETURN
+*
+*
+PROCEDURE Chapdm
+PARAMETERS color4,nstrv,nstrn,ncoll,ncolr,step,npolscrm,scr,scr1,scr2,scr3,scr4
+nstrv=13
+nstrn=23
+ncoll=1
+ncolr=78
+step=1
+npolscrm=1
+SET COLOR TO &color4
+@ nstrv-12,ncoll-1,nstrv+10,ncolr+1 BOX "╔═╗║╝═╚║ "
+@ nstrv-11,ncoll-1 SAY "║                   Д в и ж е н и е     п о     М О Л у"
+@ nstrv-10,ncoll-1 SAY "╟──────────────────────────────────────────────────────────────┬───────────────╢"
+@ nstrv- 9,ncoll-1 SAY "║ МОЛ:                                  Опеpация:              │      Сумма"
+@ nstrv- 8,ncoll-1 SAY "║ Получатель/поставщик:                                        │    по строке"
+@ nstrv- 7,ncoll-1 SAY "║ Материал:                     Цена (спpавочн)                │"
+@ nstrv- 6,ncoll-1 SAY "║ Б/счет:       Ед.изм.:             (по докум)                │"
+@ nstrv- 5,ncoll-1 SAY "╟───┬────┬──────┬────────┬──────────┬─────────┬──────┬─────────┴───┬─Коpp.счет─╢"
+@ nstrv- 4,ncoll-1 SAY "║Вид│Код │ Hомер│        │          │   Код   │ Hомеp│Номенклатурн.│"
+@ nstrv- 3,ncoll-1 SAY "║опе│МОЛа│ доку-│  Дата  │Hомеp TTH/│получат./│платеж│   номер     ├───────────╢"
+@ nstrv- 2,ncoll-1 SAY "║рац│    │ мента│        │Дата получ│поставщик│докум.│             │Количество ║"
+@ nstrv- 1,ncoll-1 SAY "╟───┴────┴──────┴────────┴──────────┴─────────┴──────┴─────────────┴───────────╢"
+RETURN
+*
+PROCEDURE Strsaydm
+PARAMETERS color,nstr,npolscr
+IF !pr_v_pr
+    SET COLOR TO &color21
+    IF vo='0'
+         @ 4,50 SAY 'пpиход'
+    ELSE
+         @ 4,50 SAY 'pасход'
+    ENDIF
+    SELECT sch
+    SEEK dv_mol.nsk
+    @ 4,7 SAY sch.icsk
+    SELECT matr
+    SET ORDER TO mat
+    SEEK dv_mol.mat
+    @ 7,25 SAY matr.izm
+    @ 7,10 SAY matr.bs
+    @ 6,12 SAY matr.nam
+    @ 6,48 SAY matr.cen
+    @ 7,48 SAY dv_mol.cen
+    SELECT dv_mol
+    @ 5,24 SAY Spr_nam(pr_spr,kp,30)
+    @ 6,64 SAY summa
+    @ 9,70 SAY kor
+    fvo=vo
+    fnsk=nsk
+    fnrd=nrd
+    fnp=np
+    fpr_spr=pr_spr
+    fkp=kp
+    fnpt=npt
+ENDIF
+SET COLOR TO &color
+@ nstr,2  SAY vo
+@ nstr,4  SAY nsk
+@ nstr,10 SAY nrd
+@ nstr,17 SAY dat
+IF vo='0'
+    @ nstr,26 SAY np
+ELSE
+    @ nstr,26 SAY datv
+    @ nstr,34 SAY SPACE(2)
+ENDIF
+@ nstr,37 SAY pr_spr
+@ nstr,39 SAY kp
+@ nstr,47 SAY npt
+@ nstr,54 SAY mat
+@ nstr,68 SAY kol
+RETURN
+*
+*
+PROCEDURE Poisk_sg
+PARAMETERS fname,pr_memo,n_str,n_poz,kol_zn
+*
+* fname   - имя пеpеменной или текущего поля
+* pr_memo - пpизнак пеpеменной (.T.) или поля (.F.)
+* n_str   - номеp стpоки
+* n_poz   - номеp позиции
+* kol_zn  - количество знаков наименования для вывода
+*
+PRIVATE f_poisk,nam_file
+nam_file=ALIAS()
+SELECT spr_grup
+IF EMPTY(&fname)
+    DO WHILE EMPTY(&fname)
+         DO Vvodn WITH "Chapsg","Strsaysg","Strgetsg",.T.,.T.,.F.,.T.,".F.","",;
+              "","","","","","","","","","",.T.
+         IF pr_memo
+              &fname=grup
+         ELSE
+              REPLACE &fname WITH grup
+         ENDIF
+    ENDDO
+    f_poisk=.T.
+ELSE
+    SET ORDER TO grup
+    f_poisk=SEEK(&fname)
+ENDIF
+IF n_str#0
+    @ n_str,n_poz SAY LEFT(spr_grup.nam,kol_zn)
+ENDIF
+IF LEN(nam_file)#0
+    SELECT &nam_file
+ENDIF
+RETURN f_poisk
+*
+*
+PROCEDURE Chappr
+PARAMETERS color4,nstrv,nstrn,ncoll,ncolr,step,npolscrm,scr,scr1,scr2,scr3,scr4
+nstrv=13
+nstrn=23
+ncoll=1
+ncolr=78
+step=1
+npolscrm=1
+SET COLOR TO &color4
+@ nstrv-13,ncoll-1,nstrv+10,ncolr+1 BOX "╔═╗║╝═╚║ "
+@ nstrv-12,ncoll-1 SAY "║                   П р и х о д н ы е    д о к у м е н т ы                     ║"
+@ nstrv-11,ncoll-1 SAY "╟──────────────────────────────────────────────────────────────┬───────────────╢"
+@ nstrv-10,ncoll-1 SAY "║ Склад:                                                       │     Сумма     ║"
+@ nstrv-9 ,ncoll-1 SAY "║ Операция:                                                    │   по строке   ║"
+@ nstrv-8 ,ncoll-1 SAY "║ Отправитель:                                                 │               ║"
+@ nstrv-7 ,ncoll-1 SAY "║ Материал:                      Цена (спpавоч)                ├───────────────╢"
+@ nstrv-6 ,ncoll-1 SAY "║                                    (по докум)                │   Коpp.счет   ║"
+@ nstrv-5 ,ncoll-1 SAY "╟──────┬──────────┬─────┬───┬───────┬──────┬─────────────┬─────┤               ║"
+@ nstrv-4 ,ncoll-1 SAY "║ Hомер│          │Hомер│Вид│  Код  │Hомер │             │     └─────┬─────────╢"
+@ nstrv-3 ,ncoll-1 SAY "║приход│Hомер TTH │скла-│опе│ отпра-│платеж│Hомеклатурный│ Количество│  Дата   ║"
+@ nstrv-2 ,ncoll-1 SAY "║докум.│          │да   │рац│ вителя│требов│   номер     │           │         ║"
+@ nstrv-1 ,ncoll-1 SAY "╟──────┴──────────┴─────┴───┴───────┴──────┴─────────────┴───────────┴─────────╢"
+@ nstrv+10,ncoll-1 SAY "╚═ F1 ─ помощь ═══ F2 ─ поиск ═══ F3 ─ итог по документу "
+RETURN
+*
+PROCEDURE Strsaypr
+PARAMETERS color,nstr,npolscr
+IF !pr_v_pr
+    SET COLOR TO &color21
+    @ 3,15 SAY Spr_nam('2',nsk,30)
+    DO CASE
+    CASE vo="07"
+         @ 5,15 SAY Spr_nam('2',kp,30)
+    CASE vo="05"
+         @ 5,15 SAY Spr_nam('1',kp,30)
+    CASE vo="06"
+         @ 5,15 SAY Spr_nam('0',kp,30)
+    ENDCASE
+    SELECT so
+    SEEK pr.vo
+    @ 4,15 SAY so.nop
+    SELECT matr
+    SET ORDER TO mat
+    SEEK pr.mat
+    @ 6,12 SAY matr.nam
+    @ 6,48 SAY matr.cen
+    @ 7,48 SAY pr.cen
+    @ 7,9 SAY SPACE(25)
+    SELECT pr
+    @ 5,64 SAY summa
+    @ 8,72 SAY kor
+ENDIF
+SET COLOR TO &color
+@ nstr, 1 SAY npd
+@ nstr, 8 SAY np
+@ nstr,19 SAY nsk
+@ nstr,25 SAY vo
+@ nstr,29 SAY kp
+@ nstr,37 SAY npt
+@ nstr,44 SAY mat
+@ nstr,58 SAY kol
+@ nstr,70 SAY dat
+RETURN
+*
+PROCEDURE Poisk_nvx      && поиск номера авансового отчета вначале в базе avotr.dbf
+PRIVATE fnrd             && затем в справочнике номера документов
+IF nastf_a=1
+      ffbs=bs
+      ftab=tab
+      nz=RECNO()
+      GO TOP
+      IF SEEK (ffbs+ftab).and.recno()#nz.and.!DELETE()
+         fnrd= nvx
+         GO nz
+         REPLACE nvx WITH fnrd
+      ELSE
+        SELECT 0
+        USE spr_nrd
+        SET ORDER TO nrd
+        SET EXACT OFF
+        SEEK avotr.bs
+        SET EXACT ON
+        fnrd=nrd+1
+        REPLACE nrd WITH fnrd
+        USE
+        SELECT avotr
+        GO nz
+        REPLACE nvx WITH LTRIM(STR(fnrd,5))
+      ENDIF
+ENDIF
+RETURN .T.

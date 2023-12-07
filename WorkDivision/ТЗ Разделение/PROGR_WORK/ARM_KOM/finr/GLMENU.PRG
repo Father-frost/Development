@@ -1,0 +1,41 @@
+SET SYSMENU TO
+SET SYSMENU ON
+DEFINE PAD _rge16bdm8 OF _MSYSMENU PROMPT "\<Редактировать" COLOR SCHEME 3 ;
+	KEY ALT+H, ""
+DEFINE PAD _rge16bdmc OF _MSYSMENU PROMPT "С\<ервис" COLOR SCHEME 3 ;
+	KEY ALT+T, "Alt+Е"
+ON PAD _rge16bdm8 OF _MSYSMENU ACTIVATE POPUP glmenup
+ON PAD _rge16bdmc OF _MSYSMENU ACTIVATE POPUP servis
+
+DEFINE POPUP glmenup MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR _MED_UNDO OF glmenup PROMPT "\<Отмена" ;
+	KEY CTRL+Z, "CTRL+Z"
+DEFINE BAR _MED_REDO OF glmenup PROMPT "\<Повтор" ;
+	KEY CTRL+R, "CTRL+R"
+DEFINE BAR _MED_SP100 OF glmenup PROMPT "\-"
+DEFINE BAR _MED_CUT OF glmenup PROMPT "\<Вырезать" ;
+	KEY CTRL+X, "CTRL+X"
+DEFINE BAR _MED_COPY OF glmenup PROMPT "\<Скопировать" ;
+	KEY CTRL+C, "CTRL+C"
+DEFINE BAR _MED_PASTE OF glmenup PROMPT "Вс\<Тавить" ;
+	KEY CTRL+V, "CTRL+V"
+DEFINE BAR _MED_SP200 OF glmenup PROMPT "\-"
+DEFINE BAR _MED_SLCTA OF glmenup PROMPT "Выб\<рать все" ;
+	KEY CTRL+A, "CTRL+A"
+DEFINE BAR _MED_CLEAR OF glmenup PROMPT "Очистит\<ь"
+DEFINE BAR _MED_GOTO OF glmenup PROMPT "Перейти \<на строку..." ;
+	KEY ALT+Y, "Alt+Н"
+DEFINE BAR _MED_SP300 OF glmenup PROMPT "\-"
+DEFINE BAR _MED_FIND OF glmenup PROMPT "По\<иск..." ;
+	KEY CTRL+F, "CTRL+F"
+DEFINE BAR _MED_FINDA OF glmenup PROMPT "Про\<должить поиск" ;
+	KEY CTRL+G, "CTRL+G"
+DEFINE BAR _MED_REPL OF glmenup PROMPT "\<Заменить и продолжить поиск" ;
+	KEY CTRL+E, "CTRL+E"
+DEFINE BAR _MED_REPLA OF glmenup PROMPT "Зам\<енить все" ;
+	KEY ALT+T, "Alt+Е"
+
+DEFINE POPUP servis MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR _MST_CALCU OF servis PROMPT "\<Калькулятор" ;
+	KEY ALT+C, "ALT+C"
+DEFINE BAR _MST_DIARY OF servis PROMPT "Календарь/\<Ежедневник"

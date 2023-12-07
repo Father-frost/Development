@@ -1,0 +1,45 @@
+
+* WIZNAME = WZ_BQUER
+* VERSION = .95
+* TIMESTAMP = 476774400.0000
+* CLIENTSERVER =
+* TABLES = C:\FPD26\SAMPLE\CATALOG\INVOICES.DBF;C:\FPD26\SAMPLE\CATALOG\DETAIL.DBF;C:\FPD26\SAMPLE\CATALOG\OFFICES.DBF;C:\FPD26\SAMPLE\CATALOG\PARTS.DBF;C:\FPD26\SAMPLE\CATALOG\SALESMAN.DBF;C:\FPD26\SAMPLE\CATALOG\CUSTOMER.DBF
+* JOINS = Detail;Ino;Invoices;Ino;0
+* JOINS = Offices;Ono;Salesman;Ono;0
+* JOINS = Parts;Pno;Detail;Pno;0
+* JOINS = Salesman;Salesman;Invoices;Salesman;0
+* JOINS = Customer;Cno;Invoices;Cno;0
+* FIELDS = Invoices.ino;Invoices.cno;Invoices.idate;Invoices.itotal;Customer.contact;Customer.company;Customer.address;Customer.city;Customer.state;Customer.zip;Customer.phone;Salesman.name;Offices.ono;Parts.descript;Detail.ltotal;PRTPROFIT=(Detail.price - Parts.cost) * 100;ITEMTOTAL=(Detail.qty * Parts.price)
+* SORT FIELDS = 
+* GROUP = Invoices.idate:1D;Invoices.ino:1N
+* SQL = SQL Select statement for Mailmerge Wizard:
+* SELECT Invoices.ino,Invoices.cno,Invoices.idate,Invoices.itotal,Customer.contact,Customer.company,Customer.address,Customer.city,Customer.state,Customer.zip,Customer.phone,Salesman.name,Offices.ono,Parts.descript,Detail.ltotal,(Detail.price - Parts.cost) * 100 PRTPROFIT,(Detail.qty * Parts.price) ITEMTOTAL;
+*	FROM C:\FPD26\SAMPLE\CATALOG\INVOICES.DBF,C:\FPD26\SAMPLE\CATALOG\DETAIL.DBF,C:\FPD26\SAMPLE\CATALOG\OFFICES.DBF,C:\FPD26\SAMPLE\CATALOG\PARTS.DBF,C:\FPD26\SAMPLE\CATALOG\SALESMAN.DBF,C:\FPD26\SAMPLE\CATALOG\CUSTOMER.DBF;
+*	WHERE Invoices.Ino = Detail.Ino AND Salesman.Ono = Offices.Ono AND Detail.Pno = Parts.Pno AND Invoices.Salesman = Salesman.Salesman AND Invoices.Cno = Customer.Cno;
+*	GROUP BY Invoices.idate,Invoices.ino;
+*	INTO CURSOR Query
+IF !USED("Invoices")
+	USE LOCFILE("C:\FPD26\SAMPLE\CATALOG\INVOICES.DBF","DBF","Where is C:\FPD26\SAMPLE\CATALOG\INVOICES.DBF ?") AGAIN IN 0 ALIAS Invoices
+ENDIF
+IF !USED("Detail")
+	USE LOCFILE("C:\FPD26\SAMPLE\CATALOG\DETAIL.DBF","DBF","Where is C:\FPD26\SAMPLE\CATALOG\DETAIL.DBF ?") AGAIN IN 0 ALIAS Detail
+ENDIF
+IF !USED("Offices")
+	USE LOCFILE("C:\FPD26\SAMPLE\CATALOG\OFFICES.DBF","DBF","Where is C:\FPD26\SAMPLE\CATALOG\OFFICES.DBF ?") AGAIN IN 0 ALIAS Offices
+ENDIF
+IF !USED("Parts")
+	USE LOCFILE("C:\FPD26\SAMPLE\CATALOG\PARTS.DBF","DBF","Where is C:\FPD26\SAMPLE\CATALOG\PARTS.DBF ?") AGAIN IN 0 ALIAS Parts
+ENDIF
+IF !USED("Salesman")
+	USE LOCFILE("C:\FPD26\SAMPLE\CATALOG\SALESMAN.DBF","DBF","Where is C:\FPD26\SAMPLE\CATALOG\SALESMAN.DBF ?") AGAIN IN 0 ALIAS Salesman
+ENDIF
+IF !USED("Customer")
+	USE LOCFILE("C:\FPD26\SAMPLE\CATALOG\CUSTOMER.DBF","DBF","Where is C:\FPD26\SAMPLE\CATALOG\CUSTOMER.DBF ?") AGAIN IN 0 ALIAS Customer
+ENDIF
+SELECT Invoices.ino,Invoices.cno,Invoices.idate,Invoices.itotal,Customer.contact,Customer.company,Customer.address,Customer.city,Customer.state,Customer.zip,Customer.phone,Salesman.name,Offices.ono,Parts.descript,Detail.ltotal,;
+		(Detail.price - Parts.cost) * 100 AS PRTPROFIT,;
+		(Detail.qty * Parts.price) AS ITEMTOTAL;
+	FROM Invoices,Detail,Offices,Parts,Salesman,Customer;
+	WHERE Invoices.Ino = Detail.Ino AND Salesman.Ono = Offices.Ono AND Detail.Pno = Parts.Pno AND Invoices.Salesman = Salesman.Salesman AND Invoices.Cno = Customer.Cno;
+	GROUP BY Invoices.idate,Invoices.ino;
+	INTO CURSOR Query

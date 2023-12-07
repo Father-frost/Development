@@ -1,0 +1,31 @@
+
+PKARC    FAST!    Archive Create/Update Utility    Version 3.5    04-27-87
+Copyright (c) 1986,1987 PKWARE Inc. All Rights Reserved.  PKARC/h for help
+
+Searching Archive: MTFILE.ARC
+
+Filename        Length   Method     Size   Ratio    Date      Time    CRC
+--------        ------   ------    ------  -----    ----      ----    ---
+ANALIT01.DAT     12288  Crunched      104   00%   01-19-98  22:11:14  C6CC
+CARDKEY.DAT     202240  Squashed    58188   72%   01-10-03  11:40:20  48E9
+ITOG1.DAT       124928  Squashed    52443   59%   12-19-02  09:33:54  6F0A
+ITOG2.DAT       124928  Squashed    52256   59%   12-19-02  09:34:20  53F5
+ITOG3.DAT        49152  Crunched    16750   66%   12-19-02  09:34:40  AA5B
+ITOG4.DAT       133120  Squashed    34530   75%   12-19-02  09:35:02  9E90
+IZNOC.DAT      2549760  Squashed   758337   71%   12-19-02  09:33:14  6B4E
+MTAVT.DAT         8192  Crunched      511   94%   01-10-03  09:51:48  8A66
+MTBASE.DAT      425984  Squashed   120845   72%   01-14-03  11:33:34  787E
+MTBASE0.DAT      32768  Crunched      247   00%   01-19-98  22:11:14  7070
+MTBASE1.DAT      14336  Crunched      192   99%   01-19-98  22:11:14  8637
+MTDOPF.DAT      335872  Squashed   105473   69%   01-10-03  11:40:20  F1B0
+MTDRAGC.DAT      81920  Squashed    24969   70%   01-10-03  11:39:06  27F9
+MTFILE.DAT      197632  Squashed    62038   69%   02-18-02  10:19:28  D2D8
+MTLASTD.DAT       3072  Crunched      126   96%   01-14-03  11:33:34  4A5F
+MTWORKS.DAT       1536  Crunched       66   96%   01-19-98  22:11:14  83A4
+OSACC.DAT       142336  Squashed    41954   71%   01-14-03  11:33:34  BDD1
+OSDOC.DAT        49152  Crunched     7597   85%   01-14-03  11:33:34  7D96
+OSMOVMNT.DAT    311296  Squashed    81827   74%   01-14-03  11:33:34  D341
+PEREOCEN.DAT    442880  Squashed   140763   69%   02-18-02  11:25:10  BF93
+TMTDBA.DAT         108   Packed         7   94%   12-19-02  09:33:14  1B09
+----            ------             ------  -----
+0021           5243500            1559223   71%

@@ -1,0 +1,12 @@
+1: основные
+   Call all tmt
+2: Копирование / Восстановление
+   Call all tmtcopy
+3: Перероценка
+   Call all tmTa
+4: Настройка(Setup)
+   Call all setupmt
+5: Пароли 
+   Call all EditPswo
+6: Переход на новый классификатор
+   call all tmt3

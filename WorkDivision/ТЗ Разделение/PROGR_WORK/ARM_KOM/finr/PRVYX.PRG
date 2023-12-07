@@ -1,0 +1,25 @@
+*
+*   Программа просмотра выходных форм
+*
+DEFINE WINDOW Failn FROM 7,27 TO 9,62 COLOR SCHEME 19 DOUBLE SHADOW
+ACTIVATE WINDOW Failn
+SET COLOR TO &color14
+fname="out.txt        "
+DO WHILE .T.
+    @ 0,0 SAY " Введите имя файла" GET fname
+    READ
+    IF LASTKEY()=13.OR.LASTKEY()=27
+         EXIT
+    ENDIF
+ENDDO
+IF LASTKEY()=27
+    RELEASE WINDOW Failn
+    RETURN
+ENDIF
+IF fname=" ".OR.UPPER(RIGHT(RTRIM(fname),4))#".TXT"
+    RETURN
+ENDIF
+SET PRINTER TO
+MODIFY COMMAND &fname WINDOW Out NOEDIT
+RELEASE WINDOW Failn
+RETURN

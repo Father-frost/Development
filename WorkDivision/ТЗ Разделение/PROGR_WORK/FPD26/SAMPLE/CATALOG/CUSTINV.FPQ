@@ -1,0 +1,75 @@
+
+* WIZNAME = WZ_BQUER
+* VERSION = .95
+* TIMESTAMP = 476774400.0000
+* CLIENTSERVER =
+* TABLES = C:\FPD26\SAMPLE\CATALOG\CUSTOMER.DBF;C:\FPD26\SAMPLE\CATALOG\INVOICES.DBF
+* JOINS = Invoices;Cno;Customer;Cno;0
+* FIELDS = Customer.company;Customer.contact;Customer.city;Invoices.ino;Invoices.itotal
+* SORT FIELDS = Customer.company
+* GROUP = 
+* SQL = SQL Select statement for Mailmerge Wizard:
+* SELECT Customer.company,Customer.contact,Customer.city,Invoices.ino,Invoices.itotal;
+*	FROM C:\FPD26\SAMPLE\CATALOG\CUSTOMER.DBF,C:\FPD26\SAMPLE\CATALOG\INVOICES.DBF;
+*	WHERE Customer.Cno = Invoices.Cno;
+*	ORDER BY Customer.company;
+*	INTO CURSOR Query
+IF !USED("Customer")
+	SELECT 0
+	USE (LOCFILE("C:\FPD26\SAMPLE\CATALOG\CUSTOMER.DBF","DBF","Where is Customer.DBF ?")) AGAIN ALIAS Customer
+ELSE
+	SELECT Customer
+	SET RELATION TO
+	SET SKIP TO
+	SET ORDER TO
+	SET FILTER TO
+ENDIF
+IF !USED("Invoices")
+	SELECT 0
+	USE (LOCFILE("C:\FPD26\SAMPLE\CATALOG\INVOICES.DBF","DBF","Where is Invoices.DBF ?")) AGAIN ALIAS Invoices
+ELSE
+	SELECT Invoices
+	SET RELATION TO
+	SET SKIP TO
+	SET ORDER TO
+	SET FILTER TO
+ENDIF
+SELECT Invoices
+m.i=1
+DO WHILE !EMPTY(KEY(m.i))
+	IF NORMALIZE(KEY(m.i))="CNO"
+		SET ORDER TO m.i
+		EXIT
+	ENDIF
+	m.i=m.i+1
+ENDDO
+IF EMPTY(SET("ORDER"))
+	IF SYS(2011)#"Exclusive"
+		USE DBF(ALIAS()) EXCLUSIVE AGAIN ALIAS (ALIAS())
+	ENDIF
+	INDEX ON Cno TAG Cno &&Cno
+ENDIF
+SELECT Customer	&&Parent Area
+SET RELATION TO Cno INTO Invoices ADDITIVE
+SET FILTER TO FOUND("Invoices")
+SELECT Customer
+SET SKIP TO Invoices
+*Sort order
+m.i=1
+DO WHILE !EMPTY(KEY(m.i))
+	IF NORMALIZE(KEY(m.i))="UPPER(COMPANY)" OR NORMALIZE(KEY(m.i))="COMPANY"
+		SET ORDER TO m.i ASCENDING
+		EXIT
+	ENDIF
+	m.i=m.i+1
+ENDDO
+IF EMPTY(SET("ORDER"))
+	IF SYS(2011)#"Exclusive"
+		USE DBF(ALIAS()) EXCLUSIVE AGAIN ALIAS (ALIAS())
+	ENDIF
+	INDEX ON UPPER(company) TAG company
+ENDIF
+LOCATE
+SET FIELDS GLOBAL
+SET FIELDS TO
+SET FIELDS TO Customer.company,Customer.contact,Customer.city,Invoices.ino,Invoices.itotal

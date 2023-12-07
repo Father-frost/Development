@@ -1,0 +1,45 @@
+ REM INSTALLED BY COMMUTER UTILITY
+REM LH MSCDEX.EXE /D:DST_CD01
+
+@ECHO ON
+@PROMPT $P$G
+GOTO %CONFIG%
+
+:NC
+@LH /L:0;1,45456 /S C:\DOS\SMARTDRV.EXE
+@PATH c:\temp;C:\DN;C:\DOS;C:\ARH;C:\NC;d:\NASTIL;d:\NG;d:\KN
+@LH /L:1,46464 C:\KEYRUS\KEYRUS
+@LH /L:1,46464 C:\MOUSE\MOUSE
+SET CLIPPER=F115
+SET NU=D:\NU
+@SET TEMP=C:\TEMP
+@NDD C: /Q
+@NDD d: /Q
+@LH NC
+@GOTO END
+
+:RT
+@LH /L:0;1,45456 /S C:\DOS\SMARTDRV.EXE
+@PATH c:\temp;C:\DOS;C:\NC;c:\dn;C:\ARH;c:\beta;c:\TOOLs;d:\nastil;d:\ng;d:\kn
+rem @LH /L:1,46464 uniscr
+rem @LH /L:1,46464 jurkeyb S
+@LH /L:1,46464 C:\KEYRUS\KEYRUS
+rem SET NU=D:\NU
+@SET TEMP=C:\TEMP
+rem @NDD C: /Q
+rem @NDD d: /Q
+cd\
+cd beta
+beta
+betaload RN~FX80.pr
+betaload AN~1208.prf
+d:
+cd\
+@LH NC
+@GOTO END
+
+:END
+
+C:\DOS\MODE CON CP PREP=((866) C:\DOS\EGA.CPI)
+C:\DOS\MODE CON CP SEL=866
+C:\DOS\KEYB ru

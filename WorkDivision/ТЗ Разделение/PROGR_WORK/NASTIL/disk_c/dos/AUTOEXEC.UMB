@@ -1,0 +1,9 @@
+@echo off
+C:\DOS\SMARTDRV.EXE   
+PROMPT $p$g
+c:\keyrus\keyrus
+c:\mouse\mouse
+PATH D:\WINDOWS;C:\WINDOWS;C:\DOS;d:\nu;c:\check\v3_0;c:\arch;d:\aids;c:\nc
+SET NU=D:\NU
+SET TEMP=C:\TEMP
+nc

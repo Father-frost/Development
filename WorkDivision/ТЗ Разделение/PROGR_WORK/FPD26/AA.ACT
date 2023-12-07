@@ -1,0 +1,150 @@
+    1  *:*****************************************************************************
+    2  *:
+    3  *:        Program: D:\FPD26\AA.PRG
+    4  *:
+    5  *:         System: 
+    6  *:         Author: 
+    7  *:      Copyright (c) 1910, 
+    8  *:  Last modified: 16/03/103     15:51
+    9  *:
+   10  *:          Calls: MSO.PRG
+   11  *:               : FORM99.PRG
+   12  *:               : PROCKU16.PRG
+   13  *:               : M0601061.PRG
+   14  *:               : MSOZ.PRG
+   15  *:
+   16  *:           Uses: &IF_D              
+   17  *:               : &IF_D10            
+   18  *:
+   19  *:        Indexes: &IF_I              
+   20  *:               : &IF_I101           
+   21  *:
+   22  *:    Other Files: &WWFIL
+   23  *:               : DBF
+   24  *:               : &WWFILD
+   25  *:
+   26  *:      Documented 09.03.10 at 14:26               FoxDoc  version 2.10f
+   27  *:*****************************************************************************
+   28      *m0601029
+   29      PARA sstr,ccol,q4nf,d_df
+   30      SET DEVI TO SCRE
+   31    ÚÄIF .NOT. (FILE('&if_d10') .AND. FILE('&if_i101'))
+   32    ³    DO mso WITH '” ©« ¯¥ç â¨ ­¥ áä®à¬¨à®¢ ­.',9
+   33  <ÍÍÍÍÍÍRETU
+   34    ÀÄENDIF
+   35      kler_15=0
+   36      SELE 1
+   37      if_d=pa_d+'spfond.dbf'
+   38      if_i=pa_d+'ispfond1.idx,'+pa_d+'ispfond2.idx'
+   39      USE &if_d INDE &if_i
+   40    ÚÄIF kler_15=1
+   41    ³    CLOSE DATA
+   42  <ÍÍÍÍÍÍRETU
+   43    ÀÄENDIF
+   44      SELE 2
+   45      USE &if_d10 INDE &if_i101
+   46      SELE 4
+   47      if_d=pa_d+'ls.dbf'
+   48      if_i=pa_d+'ils1.idx,'+pa_d+'ils2.idx,'+pa_d+'ils3.idx'
+   49      USE &if_d INDE &if_i
+   50    ÚÄIF kler_15=1
+   51    ³    CLOSE DATA
+   52  <ÍÍÍÍÍÍRETU
+   53    ÀÄENDIF
+   54      SET ORDER TO 3
+   55    ÉÍDO WHILE .T.
+   56    º    SELE 5
+   57    º    kl_99=0
+   58    º    DO form99
+   59    º  ÚÄIF kl_99=1
+   60    º  ³    UNLO ALL
+   61    º  ³    CLOSE DATA
+   62  <ÍÍÍÍÍÍÍÍÍRETU
+   63    º  ÀÄENDIF
+   64    º    vd=0
+   65    º    klku=0
+   66    º    rku=0
+   67    º    DO procku16
+   68    º  ÚÄIF klku=1
+   69    º  ³    CLOSE DATA
+   70  <ÍÍÍÍÍÍÍÍÍRETU
+   71    º  ÀÄENDIF
+   72    º    wwfil='vv'+SUBS(STR(rku+10000,5),2,4)+'.txt'
+   73    º    wwfild='a:vv'+SUBS(STR(rku+10000,5),2,4)+'.txt'
+   74    º    klkuz=0
+   75    º    
+   76    º    @ 6,13 CLEA TO 17,66
+   77    º  ÚÄIF d_df=1
+   78    º  ³    @ 8,16 SAY '‚›ƒ“‡Š€ ‡€€Ž’ Ž‰ ‹€’› Ž ˆƒ€„…(‚ˆ —…‘’…)'
+   79    º  ÃÄELSE
+   80    º  ³    @ 8,16 SAY ' ‚›ƒ“‡Š€ ‡€€Ž’ Ž‰ ‹€’› Ž ˆƒ€„…(„ˆ‘Š…’“)'
+   81    º  ÀÄENDIF
+   82    º    @ 10,17 SAY '„«ï ¢ë£àã§ª¨ § à¯« âë - H ¦¬¨â¥ «î¡ãî ª« ¢¨èã'
+   83    º    @ 12,17 SAY '                ‚ëå®¤ - ESC                  '
+   84    º    READ
+   85    º  ÚÄIF READKEY()=12 .OR. READKEY()=268
+   86    vÍÍÍÍÍÍÍEXIT
+   87    º  ÀÄENDIF
+   88    º    SELE 1
+   89    º    SEEK STR(rku,4)
+   90    º  ÚÄIF FOUND()
+   91    º  ³    nku=TRIM(ad)
+   92    º  ÃÄELSE
+   93    º  ³    nku=' '
+   94    º  ÀÄENDIF
+   95    º    SAVE SCRE TO scr029
+   96    º    z5fa=SPACE(20)
+   97    º    DO m0601061 WITH sstr,ccol
+   98    º    REST SCRE FROM scr029
+   99    º    SET DEVI TO SCRE
+  100    º  ÚÄIF klkuz=1
+  101    º  ³    SELE 5
+  102    º  ³    GO TOP
+  103    º  ³  ÚÄIF d_df=1
+  104    º  ³  ³    COPY TO &wwfil TYPE SDF
+  105    º  ³  ÃÄELSE
+  106    º  ³  ³    COPY TO &wwfil TYPE SDF
+  107    º  ³  ³    SAVE SCRE TO eeer
+  108    º  ³  ³  ÉÍDO WHILE .T.
+  109    º  ³  ³  º    klvv=0
+  110    º  ³  ³  º    CLEAR
+  111    º  ³  ³  º    xxx=1
+  112    º  ³  ³  º    @ 11,30 SAY '‚ë¡¥à¨â¥ à¥¦¨¬ à ¡®âë '
+  113    º  ³  ³  º    @ 13,31 PROMPT 'Š®¯¨à®¢ ­¨¥ '
+  114    º  ³  ³  º    @ 13,45 PROMPT '‚ëå®¤ '
+  115    º  ³  ³  º    MENU TO xxx
+  116    º  ³  ³  º  ÕÍDO CASE
+  117    º  ³  ³  º  ÆÍCASE xxx=1
+  118    º  ³  ³  º  ³    CLEAR
+  119    º  ³  ³  º  ³    @ 1,14 SAY "********* ŠŽˆŽ‚€Hˆ… ”€‰‹€ "+wwfil+" ************"
+  120    º  ³  ³  º  ³    @ 4,19 SAY "  “‘’€HŽ‚ˆ’… H€ “‘’Ž‰‘’‚Ž €: „ˆ‘Š…’“ "
+  121    º  ³  ³  º  ³    @ 5,8 SAY "H ¦¬¨â¥ «î¡ãî ª« ¢¨èã ¤«ï ­ ç «  ª®¯¨p®¢ ­¨ï. ‚ëå®¤ - ESC."
+  122    º  ³  ³  º  ³    READ
+  123    º  ³  ³  º  ³  ÚÄIF READKEY()=12 .OR. READKEY()=268
+  124    º  ³  ³  º  ³  ³    klvv=1
+  125    º  ³  ³  vÍÍÍÍÍÍÍÍÍÍEXIT
+  126    º  ³  ³  º  ³  ÀÄENDIF
+  127    º  ³  ³  º  ³    @ 4,0
+  128    º  ³  ³  º  ³    @ 5,0
+  129    º  ³  ³  º  ³  ÚÄIF FILE('&wwfild')
+  130    º  ³  ³  º  ³  ³    klmso=2
+  131    º  ³  ³  º  ³  ³    DO msoz WITH '„ã¡«¨p®¢ ­¨¥ ä ©«  '+wwfild+' ­  ¤¨áª¥â¥.',9
+  132    º  ³  ³  º  ³  ³  ÚÄIF klmso=2
+  133    º  ³  ³  ^ÍÍÍÍÍÍÍÍÍÍÍÍÍLOOP
+  134    º  ³  ³  º  ³  ³  ÃÄELSE
+  135    º  ³  ³  º  ³  ³  ³    DELETE FILE &wwfild
+  136    º  ³  ³  º  ³  ³  ÀÄENDIF
+  137    º  ³  ³  º  ³  ÀÄENDIF
+  138    º  ³  ³  º  ³    COPY TO &wwfild TYPE SDF
+  139    º  ³  ³  vÍÍÍÍÍÍÍEXIT
+  140    º  ³  ³  º  ÆÍCASE xxx=2
+  141    º  ³  ³  vÍÍÍÍÍÍÍEXIT
+  142    º  ³  ³  º  ÔÍENDCASE
+  143    º  ³  ³  ÈÍENDDO
+  144    º  ³  ³    REST SCRE FROM eeer
+  145    º  ³  ÀÄENDIF
+  146    º  ÀÄENDIF
+  147    ÈÍENDDO
+  148      CLOSE DATA
+  149      RETURN
+  150      *: EOF: AA.ACT

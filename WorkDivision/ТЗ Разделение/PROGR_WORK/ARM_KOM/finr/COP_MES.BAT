@@ -1,0 +1,1 @@
+  copy d:\arm\finr\*.* d:\arm\finr_arx

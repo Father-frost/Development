@@ -1,0 +1,274 @@
+SETUP FILE
+
+||
+||  Microsoft Backup - Version 6.0
+||
+||  DEFAULT.SET Setup File
+||
+||  Last Update:         9/12/94 19:07:09
+||
+||  Last Full Backup:    0/00/80  0:00:00
+||
+||  Last Backup:         0/00/80  0:00:00
+||
+||  MS-DOS Compatible Versions:
+||  1.02  1/30/90  2:00 pm
+||  1.02  1/30/90  2:00 pm
+||  1.02  1/30/90  2:00 pm
+||  1.02  1/30/90  2:00 pm
+||
+
+||
+||  General Settings
+||
+
+&00 Description:                  (No Description)
+
+@03 File Sort Type:               0         (0=Name  1=Extension  2=Size  3=Date  4=Attribute)
+
+#20 Show Selection Statistics:    No        
+
+#23 Group Selected Files:         No        
+
+#24 Print To File:                No        
+
+#07 Exclude Copy Protected Files: No        
+
+&08 Copy Protected File 1:        
+
+&09 Copy Protected File 2:        
+
+&10 Copy Protected File 3:        
+
+&11 Copy Protected File 4:        
+
+&12 Copy Protected File 5:        
+
+#47 Show Directories Above Files: No        
+
+@38 File List Width:              0         
+
+@39 File List Height:             0         
+
+#50 Show File Size:               Yes       
+
+#51 Show File Date:               Yes       
+
+#52 Show File Time:               Yes       
+
+#53 Show File Attributes:         Yes       
+
+#49 Selection Window Maximized:   Yes       
+
+||
+||  General Backup Settings
+||
+
+@04 Backup Type:                  0         (0=Full  1=Incremental  2=Differential)
+
+@01 Backup To:                    4         (1=A  2=B  3=Both  4=MS-DOS Device)
+
+#05 Backup System Files:          Yes       
+
+#06 Backup Hidden Files:          Yes       
+
+#22 Backup Read-Only Files:       Yes       
+
+#02 Backup Using Date Range:      No        
+
++00 Backup Date Range:            1/01/80 TO 12/31/99
+
+||
+||  Disk Backup Settings
+||
+
+&01 Backup Device Path:           
+
+&03 DOS Device Path 1:            C:\DOS\
+
+&04 DOS Device Path 2:            
+
+&05 DOS Device Path 3:            
+
+&06 DOS Device Path 4:            
+
+&07 DOS Device Path 5:            
+
+@02 Backup Diskette Size:         4         (0=360K  1=720K(5 1/4)  2=720K(3 1/2)  3=1.2Mb  4=1.44Mb)
+
+@09 Diskette Overwrite Warning:   3         (0=None  3=All disks)
+
+#03 Error Correction:             Yes       
+
+@10 Diskette Format Option:       0         (0=Only when needed  1=Always)
+
+@08 Data Verification:            0         (0=None  3=Read and compare)
+
+@05 Data Compression:             1         (0=Off  1=On)
+
+@12 Audible Backup Prompts:       1         (0=Off  1=On)
+
+#00 Keep Old Backup Catalogs:     Yes       
+
+#04 Quit After Backup:            No        
+
+||
+||  General Restore Settings
+||
+
+#21 Restore Using date range:     No        
+
++01 Backup Date Range:            1/01/80 TO 12/31/99
+
+@36 Restore To:                   0         (0=Original  1=Alt Drives  2=Alt Directories)
+
+@13 Restore From:                 1         (1=A  2=B  3=Both  4=MS-DOS Device)
+
+#11 Restore System files:         No        
+
+#12 Restore Hidden files:         No        
+
+#19 Restore Read-only files:      No        
+
+||
+||  Disk Restore Settings
+||
+
+&02 Restore Device Path:          
+
+@16 Data Verification:            0         (0=None  3=Read and compare)
+
+@17 Audible Restore Prompts:      1         (0=Off  1=On)
+
+#14 Prompt Before Creating Dirs:  No        
+
+#15 Prompt Before Creating Files: No        
+
+#16 Prompt Before Overwriting:    No        
+
+#18 Restore Empty Directories:    No        
+
+#10 Quit After Restore:           No        
+
+||
+||  General Compare Settings
+||
+
+@37 Compare With:                 0         (0=Original  1=Alt Drives  2=Alt Directories)
+
+@13 Compare From:                 1         (1=A  2=B  3=Both  4=MS-DOS Device)
+
+||
+||  Disk Compare Settings
+||
+
+&23 Compare Path:                 
+
+@21 Audible Compare Prompts:      1         (0=Off  1=On)
+
+#48 Quit After Compare:           No        
+
+||
+||  Include & Exclude Specifications For Backup:
+||
+
+!00: 
+
+!01: 
+
+!02: 
+
+!03: 
+
+!04: 
+
+!05: 
+
+!06: 
+
+!07: 
+
+!08: 
+
+!09: 
+
+!10: 
+
+!11: 
+
+!12: 
+
+!13: 
+
+!14: 
+
+!15: 
+
+!16: 
+
+!17: 
+
+!18: 
+
+!19: 
+
+!20: 
+
+!21: 
+
+!22: 
+
+!23: 
+
+!24: 
+
+!25: 
+
+!26: 
+
+!27: 
+
+!28: 
+
+!29: 
+
+!30: 
+
+!31: 
+
+!32: 
+
+!33: 
+
+!34: 
+
+!35: 
+
+!36: 
+
+!37: 
+
+!38: 
+
+!39: 
+
+!40: 
+
+!41: 
+
+!42: 
+
+!43: 
+
+!44: 
+
+!45: 
+
+!46: 
+
+!47: 
+
+!48: 
+
+!49: 
+

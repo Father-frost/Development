@@ -1,0 +1,27 @@
+*:*****************************************************************************
+*:
+*:        Program: D:\FPD26\AA.PRG
+*:
+*:         System: 
+*:         Author: 
+*:      Copyright (c) 1910, 
+*:  Last modified: 16/03/103     15:51
+*:
+*:          Calls: MSO.PRG
+*:               : FORM99.PRG
+*:               : PROCKU16.PRG
+*:               : M0601061.PRG
+*:               : MSOZ.PRG
+*:
+*:           Uses: &IF_D              
+*:               : &IF_D10            
+*:
+*:        Indexes: &IF_I              
+*:               : &IF_I101           
+*:
+*:    Other Files: &WWFIL
+*:               : DBF
+*:               : &WWFILD
+*:
+*:      Documented 09.03.10 at 14:26               FoxDoc  version 2.10f
+*:*****************************************************************************

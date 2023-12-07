@@ -1,0 +1,122 @@
+*m0601029
+PARA sSTR,cCOL,q4nf,d_df
+set devi to scre
+if .not. (file('&if_d10') .and. file('&if_i101'))
+do mso with 'Файл печати не сформирован.',9
+retu
+endif
+kler_15=0
+sele 1
+if_d=pa_d+'spfond.dbf'
+if_i=pa_d+'ispfond1.idx,'+pa_d+'ispfond2.idx'
+use &if_d inde &if_i
+if kler_15=1
+close data
+retu
+endif
+sele 2
+use &if_d10 inde &if_i101
+sele 4
+if_d=pa_d+'ls.dbf'
+if_i=pa_d+'ils1.idx,'+pa_d+'ils2.idx,'+pa_d+'ils3.idx'
+use &if_d inde &if_i
+if kler_15=1
+close data
+retu
+endif
+set order to 3
+do while .t.
+sele 5
+kl_99=0
+do form99
+if kl_99=1
+unlo all
+close data
+retu
+endif
+vd=0
+klku=0
+rku=0
+do procku16
+if klku=1
+close data
+retu
+endif
+wwfil='vv'+subs(str(rku+10000,5),2,4)+'.txt'
+wwfild='a:vv'+subs(str(rku+10000,5),2,4)+'.txt'
+klkuz=0
+
+@ 6,13 clea to 17,66
+if d_df=1
+@ 8,16 say 'ВЫГРУЗКА ЗАРАБОТНОЙ ПЛАТЫ ПО БРИГАДЕ(ВИНЧЕСТЕР)'
+else                                               
+@ 8,16 say ' ВЫГРУЗКА ЗАРАБОТНОЙ ПЛАТЫ ПО БРИГАДЕ(ДИСКЕТУ)'
+endif
+@ 10,17 say 'Для выгрузки зарплаты - Hажмите любую клавишу'
+@ 12,17 say '                Выход - ESC                  '
+READ
+IF readkey()=12 .OR. readkey()=268
+exit
+endif
+sele 1
+seek str(rku,4)
+if found()
+nku=trim(ad)
+else
+nku=' '
+endif
+save scre to scr029
+z5fa=space(20)
+DO M0601061 WITH sSTR,cCOL
+rest scre from scr029
+set devi to scre
+if klkuz=1
+sele 5
+go top
+if d_df=1
+copy to &wwfil type sdf
+else
+copy to &wwfil type sdf
+save scre to eeer
+do while .t.
+klvv=0
+CLEAR
+xxx=1
+   @ 11,30 say 'Выберите режим работы '
+   @ 13,31 prompt 'Копирование '
+   @ 13,45 prompt 'Выход '
+   MENU to xxx
+DO CASE
+        case xxx=1
+   CLEAR
+   @ 1,14 SAY "********* КОПИРОВАHИЕ ФАЙЛА "+wwfil+" ************"
+   @ 4,19 SAY "  УСТАHОВИТЕ HА УСТРОЙСТВО А: ДИСКЕТУ "
+   @ 5,8 say "Hажмите любую клавишу для начала копиpования. Выход - ESC."
+      read
+if readkey()=12 .or. readkey()=268
+klvv=1
+exit
+endif
+   @ 4,0
+   @ 5,0
+        if file('&wwfild')
+        klmso=2
+        do msoz with 'Дублиpование файла '+wwfild+' на дискете.',9 
+        if klmso=2
+        loop
+        else
+    delete file &wwfild      
+        endif
+        endif
+copy to &wwfild type sdf
+        exit
+        case xxx=2
+        exit
+ENDCASE
+enddo
+rest scre from eeer
+endif
+endif
+enddo
+close data
+return

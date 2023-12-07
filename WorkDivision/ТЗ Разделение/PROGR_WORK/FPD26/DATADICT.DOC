@@ -1,0 +1,34 @@
+System: 
+Author: 
+09.03.10   14:26:03
+Database Structure Summary
+
+-------------------------------------------------------------------------------
+
+2 databases in the system
+   &IF_D
+   &IF_D10
+-------------------------------------------------------------------------------
+
+&IF_D is a macro unknown to FoxDoc
+
+
+This database appears to be associated with index file/tag(s): 
+       : &IF_I  (index key not found)
+
+Used by AA.PRG                
+
+-------------------------------------------------------------------------------
+
+
+&IF_D10 is a macro unknown to FoxDoc
+
+
+This database appears to be associated with index file/tag(s): 
+       : &IF_I101  (index key not found)
+
+Used by AA.PRG                
+
+-------------------------------------------------------------------------------
+
+

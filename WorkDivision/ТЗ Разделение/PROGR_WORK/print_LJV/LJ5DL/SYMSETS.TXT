@@ -1,0 +1,28 @@
+Symbol Set ID   Symbol Set Name                 
+-------------   ---------------                 
+    8U          Roman-8                         
+    7J          DeskTop                         
+    19U         Windows 3.1 Latin 1 "ANSI"      
+    0N          ISO 8859/1 Latin 1              
+    10U         PC-8                            
+    12U         PC-850
+    10J         PS Text
+    12J         MC Text
+    13J         Ventura International
+    11U         PC-8 D/N (Danish/Norwegian)
+    14J         Ventura US
+    1U          Legal
+    9U          Windows 3.0 "Latin 1"
+    6J          Microsoft Publishing
+    17U         PC-852
+    9T          PC-8 Turkish
+    2N          ISO 8859/2 Latin 2
+    9E          Windows 3.1 Latin 2
+    5N          ISO 8859/9 Latin 5
+    5T          Windows 3.1 Latin 5
+    6M          Ventura Math
+    8M          Math-8
+    15U         Pi-Font
+    5M          PS Math
+    19M         Symbol
+    579L        Wingdings

@@ -1,0 +1,28 @@
+System: 
+Author: 
+09.03.10   14:26:03
+Index Parameter Summary
+
+-------------------------------------------------------------------------------
+
+2 index files in the system
+   &IF_I
+   &IF_I101
+-------------------------------------------------------------------------------
+
+&IF_I is a macro unknown to FoxDoc
+
+This index file appears to be associated with database(s): 
+       : &IF_D
+
+Used by AA.PRG                
+
+-------------------------------------------------------------------------------
+&IF_I101 is a macro unknown to FoxDoc
+
+This index file appears to be associated with database(s): 
+       : &IF_D10
+
+Used by AA.PRG                
+
+-------------------------------------------------------------------------------
